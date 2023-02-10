@@ -12,7 +12,7 @@ module.exports = {
     aggregateTimeout: 600,
   },
   entry: {
-    index: './src/js/index.js',
+    index: './src/index.js',
   },
   devtool: 'inline-source-map',
   devServer: {
