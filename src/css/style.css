@@ -121,8 +121,7 @@ main, #input-display {
 }
 
 .word-ship.bomb {
-  background-image: radial-gradient(rgb(49, 49, 49), rgb(0, 0, 0));
-  border-radius: 50%;
+  
 }
 
 .word-ship.descending {
