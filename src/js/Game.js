@@ -2,7 +2,7 @@ import '../css/style.css';
 import { getWords, getSentence } from './api.js';
 import WordShip from './WordShip';
 import { pause, randomInt, angleOfPointABFromXY, radToDeg } from './util.js';
-import Level1Data from './Level1Data.js';
+import TurretLevel from './TurretLevel.js';
 
 export default class Game {
   constructor(levelObject) {
@@ -21,12 +21,10 @@ export default class Game {
     this.animationSpeed = 300;
     this.levels = [
       undefined,
-      () => new Level1Data('level-1'),
+      () => new TurretLevel('turret-level'),
     ];
     this.levelData = [];
-
-    document.documentElement.style.setProperty('--animation-speed', this.animationSpeed + 'ms');
-
+    
     document.getElementById('start-button').addEventListener('click', async (e) => {
       e.preventDefault();
       e.target.disabled = true; // prevents Enter key 'clicking' it when invisible
@@ -72,7 +70,7 @@ export default class Game {
               if (this.playerInput.length === ship.word.length) {
                 document.getElementById('input-display').innerText = this.playerInput;
                 document.getElementById('input-display').classList.add('correct');
-                this.levelData[this.level].destroyShipAction(ship);
+                this.levelData[this.level].destroyShipAction(ship); // defined by Level
                 if (ship.lastInWave && this.dictionaryEmpty()) {
                   this.displayLevelClearModal();
                 } else {
@@ -82,7 +80,7 @@ export default class Game {
             } else {
               this.targetedWordShips.splice(this.targetedWordShips.indexOf(ship), 1);
               ship.element.classList.remove('targeted');
-              this.levelData[this.level].loseFocusAction(ship);
+              this.levelData[this.level].loseFocusAction(ship); // defined by Level
             }
           }
         }
@@ -135,7 +133,7 @@ export default class Game {
     return Math.floor(100 - ((totalWordsLeft / totalWordsInRound) * 100));
   }
 
-  async aimTurret(targetShip, forceAngle) {
+  aimTurret(targetShip, forceAngle) {
     let turretElement = document.getElementById('main-turret');
     let newAngle;
     if (forceAngle !== undefined) {
@@ -175,7 +173,7 @@ export default class Game {
     };
     let targetPosition = {
       x: targetElement.offsetLeft + (targetShip.width / 2),
-      y: targetElement.offsetTop + (targetElement.offsetHeight / 2),
+      y: targetElement.offsetTop + (targetElement.offsetHeight),
     };
     bullet.style.rotate = `${this.turretAngle}deg`;
     bullet.style.left = (turretPosition.x - (bullet.offsetWidth / 2)) + 'px';
@@ -342,7 +340,6 @@ export default class Game {
     let newLevelData = this.levels[level]();
     newLevelData.game = this;
     this.levelData[level] = newLevelData;
-    console.log(this.levelData[level]);
     let possibleWordLengths = this.levelData[level].wordLengths;
     let wordPoolSize = 200;
     for (let i = 0; i < possibleWordLengths.length; i++) {

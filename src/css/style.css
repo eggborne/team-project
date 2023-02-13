@@ -76,9 +76,9 @@ header, footer {
 }
 
 main {
-  /* display: flex;
+  display: flex;
   justify-content: center;
-  align-items: center; */
+  align-items: center;
   flex-grow: 1;
 }
 
@@ -118,10 +118,6 @@ main, #input-display {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-}
-
-.word-ship.bomb {
-  
 }
 
 .word-ship.descending {
@@ -181,6 +177,8 @@ main, #input-display {
 }
 
 #input-display {
+  position: fixed;
+  bottom: var(--header-height);
   height: var(--header-height);
   font-size: 2rem;
   color: yellow;

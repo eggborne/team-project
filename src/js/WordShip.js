@@ -16,6 +16,7 @@ export default class WordShip {
     this.element.append(this.focusLayer);
     document.querySelector('main').append(this.element);
     this.width = this.element.offsetWidth;
+    this.height = this.element.offsetHeight;
     this.element.style.minHeight = this.width + 'px';
     this.element.style.left = randomInt(0, (window.innerWidth - this.width)) + 'px';
   }

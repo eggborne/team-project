@@ -1,13 +1,13 @@
-import { pause, randomInt } from '../js/util.js';
-import '../css/Level1Data.css';
+import { pause, randomInt } from './util.js';
+import '../css/TurretLevel.css';
 
-export default class Level1Data {
+export default class TurretLevel {
   constructor(className) {
     document.querySelector('main').classList = [className];
     this.wordsPerLengthInWave = 5;
     this.wordLengths = [5];
     this.shipSpeed = 5000;
-    this.launchFrequency = 1000;
+    this.launchFrequency = 2000;
   }
 
   firstFocusAction(ship) {
