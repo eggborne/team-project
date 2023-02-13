@@ -3,7 +3,7 @@ import '../css/TurretLevel.css';
 
 export default class TurretLevel {
   constructor(className) {
-    document.querySelector('main').classList = [className];
+    document.body.classList = [className];
     this.wordsPerLengthInWave = 5;
     this.wordLengths = [5];
     this.shipSpeed = 5000;

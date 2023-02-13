@@ -1,8 +1,8 @@
-main.turret-level {
-  background-color: gray;
+body.turret-level main {
+  background-color: rgb(170, 139, 170);
 }
 
-main.turret-level .word-ship {
+body.turret-level .word-ship {
   --descend-speed: 3000ms;
   position: absolute;
   font-size: 2rem;
@@ -11,21 +11,21 @@ main.turret-level .word-ship {
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  background-image: radial-gradient(rgb(49, 49, 49), rgb(0, 0, 0));
+  background-image: radial-gradient(rgb(94, 43, 43), rgb(0, 0, 0));
   border-radius: 50%;
 }
 
-main.turret-level .word-ship.descending {
+body.turret-level .word-ship.descending {
   animation: descend var(--descend-speed) ease-in forwards;
 }
 
-main.turret-level .word-ship.defeated {
+body.turret-level .word-ship.defeated {
   transition: scale var(--animation-speed) ease, opacity var(--animation-speed) ease;
   scale: 0;
   opacity: 0;
 }
 
-main.turret-level .word-ship.detonated {
+body.turret-level .word-ship.detonated {
   transition: scale calc(var(--animation-speed) / 2) ease, 
   opacity calc(var(--animation-speed) / 2) ease,
   background-color calc(var(--animation-speed) / 2) ease;
@@ -35,7 +35,7 @@ main.turret-level .word-ship.detonated {
   background-color: orange;
 }
 
-main.turret-level .word-ship.targeted {
+body.turret-level .word-ship.targeted {
   color: rgb(220, 220, 220);
   text-shadow: 0 0 1rem rgb(0, 0, 0);
 }
