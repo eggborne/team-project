@@ -5,7 +5,7 @@ import { pause, randomInt, angleOfPointABFromXY, radToDeg } from './util.js';
 import Level1Data from './Level1Data.js';
 
 export default class Game {
-  constructor() {
+  constructor(levelObject) {
     this.playerInput = '';
     this.score = 0;
     this.destroyedThisWave = 0;
@@ -23,9 +23,7 @@ export default class Game {
       undefined,
       () => new Level1Data('level-1'),
     ];
-    this.levelData = [
-
-    ];
+    this.levelData = [];
 
     document.documentElement.style.setProperty('--animation-speed', this.animationSpeed + 'ms');
 
@@ -59,40 +57,32 @@ export default class Game {
           for (const ship of this.activeWordShips) {
             let matches = this.matchesSoFar(ship.word);
             if (matches) {
-              this.targetedWordShips.push(ship);
-              ship.element.classList.add('targeted');
-              document.getElementById('main-turret').classList.add('aiming');
-              this.aimTurret(ship);
-              ship.element.style.setProperty('--descend-speed', (this.levelData[this.level].shipSpeed) + 'ms');
-              ship.focusLayer.innerText = this.playerInput;
+              this.targetedWordShips.push(ship); //
+              ship.element.classList.add('targeted'); //
+              ship.focusLayer.innerText = this.playerInput; // always happens
+              this.levelData[this.level].firstFocusAction(ship); // defined by Level
             }
           }
-        } else {
+        } else { // one or more is targeted
           for (const ship of this.targetedWordShips) {
             let matches = this.matchesSoFar(ship.word);
             if (matches) {
-              this.aimTurret(ship);
               ship.focusLayer.innerText = this.playerInput;
+              this.levelData[this.level].maintainFocusAction(ship); // defined by Level
               if (this.playerInput.length === ship.word.length) {
                 document.getElementById('input-display').innerText = this.playerInput;
                 document.getElementById('input-display').classList.add('correct');
-                ship.element.classList.add('frozen');
-                let flySpeed = this.fireBullet(ship);
-                await pause(flySpeed);
-                this.destroyShip(ship, true);
+                this.levelData[this.level].destroyShipAction(ship);
                 if (ship.lastInWave && this.dictionaryEmpty()) {
                   this.displayLevelClearModal();
                 } else {
-                  // this.launchWordShip();
+                  //
                 }
               }
             } else {
               this.targetedWordShips.splice(this.targetedWordShips.indexOf(ship), 1);
               ship.element.classList.remove('targeted');
-              ship.focusLayer.classList.add('doomed');
-              this.aimTurret(undefined, 0);
-              this.showTypoAnimation();
-              ship.focusLayer.classList.remove('doomed');
+              this.levelData[this.level].loseFocusAction(ship);
             }
           }
         }
@@ -350,7 +340,9 @@ export default class Game {
 
   async loadLevel(level) {
     let newLevelData = this.levels[level]();
-    this.levelData[level] = newLevelData.levelData;
+    newLevelData.game = this;
+    this.levelData[level] = newLevelData;
+    console.log(this.levelData[level]);
     let possibleWordLengths = this.levelData[level].wordLengths;
     let wordPoolSize = 200;
     for (let i = 0; i < possibleWordLengths.length; i++) {

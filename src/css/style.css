@@ -151,6 +151,11 @@ main, #input-display {
   color: red !important;
 }
 
+
+.word-ship.targeted > .focus-layer {
+  color: rgb(0, 205, 0);
+}
+
 .word-ship.defeated {
   transition: scale var(--animation-speed) ease, opacity var(--animation-speed) ease;
   scale: 0;
@@ -170,10 +175,6 @@ main, #input-display {
 .word-ship.targeted {
   color: rgb(220, 220, 220);
   text-shadow: 0 0 1rem rgb(0, 0, 0);
-}
-
-.word-ship.targeted > .focus-layer {
-  color: rgb(0, 205, 0);
 }
 
 .word-ship > .focus-layer.doomed {
