@@ -1,7 +1,6 @@
 export default class WordAPI {
   constructor() {
-    // this.apiKey = process.env.NINJA_API_KEY;
-    this.apiKey = '+l/6Qhz/0J0PLhuk26U1Ag==6jqv7A8uoE0H1mZz';
+    this.apiKey = process.env.NINJA_API_KEY;
     this.paramNames = {
       topics: ['topics'],
       synonymOf: ['ml', 'rel_syn'],

@@ -1,0 +1,7 @@
+main.level-1 {
+  background-color: gray;
+}
+
+main.level-1 .word-ship {
+  border-radius: 0;
+}

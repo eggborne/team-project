@@ -1,48 +1,318 @@
-*, * * {
-  box-sizing: border-box;
+:root {
+  --actual-height: 100vh;
+  --header-height: 4rem;
+  --primary-bg-color: #222;
+  --primary-text-color: #aaa;
+  --secondary-bg-color: rgb(21, 21, 21);
+  --secondary-text-color: rgb(240, 240, 240);
+  --animation-speed: 300ms;
+}
+
+*, * *, * * * {
   margin: 0;
+  box-sizing: border-box;
+}
+
+button {
+  font-size: 1.5rem;
+  background-color: rgba(43, 68, 34);
+  color: var(--secondary-text-color);
+  border-radius: 0.5rem;
 }
 
 body {
-  font-family: sans-serif;
-  background-color: #222;
-  color: #aaa;
-  height: 100vh;
-}
-
-main {
-  padding: 3rem;
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  background-color: var(--primary-bg-color);
+  height: var(--actual-height);
+  color: var(--primary-text-color);
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: stretch;
   justify-content: space-between;
-  height: 100%;
 }
 
-#test-area {
-  font-size: 3rem;
-  height: 12rem;
-  text-align: center;
+header, footer {
+  width: 100vw;
+  height: var(--header-height);
+  background-color: var(--secondary-bg-color);
+  color: var(--secondary-text-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.5rem 1rem;
+  z-index: 1;
 }
 
-#test-area.correct {
+#level-display {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 7rem;
+  font-size: 1.5rem;
+  display: flex;
+  justify-content: space-between;
+  transition: opacity var(--animation-speed) ease, transform var(--animation-speed) ease;
+}
+
+#level-display.hidden, #score-display.hidden {
+  opacity: 0;
+  transform: translateY(1rem);
+}
+
+#level-display > p {
+  color: rgba(0, 128, 0, 0.8);
+  font-weight: bold;
+  font-size: 1rem;
+  flex-grow: 0;
+}
+
+#score-display {
+  font-size: 1.5rem;
+  min-width: 9rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+main {
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
+  flex-grow: 1;
+}
+
+#intro-message {
+  font-size: 2rem;
+  color: var(--primary-text-color);
+  margin-top: calc(var(--header-height) * 2);
+}
+
+#start-button, #intro-message {
+  align-self: stretch;
+  padding: 0 2rem;
+  transition: opacity var(--animation-speed) ease;
+}
+
+#start-button.hidden,
+#intro-message.hidden {
+  opacity: 0;
+}
+
+h1 {
+  color: var(--secondary-text-color)
+}
+
+main, #input-display {
+  padding: 2rem;
+  display: flex;
+  justify-content: center;
+}
+
+.word-ship {
+  --descend-speed: 3000ms;
+  position: absolute;
+  font-size: 2rem;
+  transition: scale var(--animation-speed) ease, opacity var(--animation-speed) ease;
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.word-ship.bomb {
+  background-image: radial-gradient(rgb(49, 49, 49), rgb(0, 0, 0));
+  border-radius: 50%;
+}
+
+.word-ship.descending {
+  animation: descend var(--descend-speed) ease-in forwards;
+}
+
+.word-ship > p {
+  position: absolute;
+}
+
+.word-ship > .focus-layer {
+  position: absolute;
+}
+
+.word-ship.obscured {
+  scale: 1.2;
+  opacity: 0;
+}
+
+.word-ship.frozen {
+  animation-play-state: paused;
+  text-shadow: none !important;
+}
+
+.word-ship.frozen > .focus-layer {
+  color: red !important;
+}
+
+.word-ship.defeated {
+  transition: scale var(--animation-speed) ease, opacity var(--animation-speed) ease;
+  scale: 0;
+  opacity: 0;
+}
+
+.word-ship.detonated {
+  transition: scale calc(var(--animation-speed) / 2) ease, 
+  opacity calc(var(--animation-speed) / 2) ease,
+  background-color calc(var(--animation-speed) / 2) ease;
+  scale: 1.5;
+  opacity: 0;
+  background-image: unset;
+  background-color: orange;
+}
+
+.word-ship.targeted {
+  color: rgb(220, 220, 220);
+  text-shadow: 0 0 1rem rgb(0, 0, 0);
+}
+
+.word-ship.targeted > .focus-layer {
+  color: rgb(0, 205, 0);
+}
+
+.word-ship > .focus-layer.doomed {
+  animation: flash-wrong 50ms infinite alternate
+}
+
+#input-display {
+  height: var(--header-height);
+  font-size: 2rem;
+  color: yellow;
+  z-index: 2;
+  transition: color 200ms ease, scale var(--animation-speed) ease, opacity 200ms ease;
+}
+
+#input-display.correct {
   color: green;
+  scale:  0;
+  opacity: 0;
 }
 
-#test-area.incorrect {
+#input-display.incorrect {
   color: red;
+  scale: 2 1;
+  opacity: 0;
 }
 
-#player-input-area {
-  text-align: center;
+.modal {
+  position: absolute;
+  width: 40rem;
+  max-width: 100vw;
+  height: 24rem;
+  max-height: 100vh;
+  left: 50%;
+  top: calc(var(--header-height) * 2);
+  transform: translate(-50%, 0);
+  background-color: var(--secondary-bg-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity var(--animation-speed) ease;
+}
+
+.modal.showing {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.modal > .modal-message {
+  font-size: 4rem;
+}
+
+.modal > .modal-details {
+  font-size: 1.2rem;
+}
+
+.modal button {
   padding: 2rem;
 }
 
-#player-input {
-  all: unset;
-  font-size: 3rem;
-  text-align: center;
-  caret-color: transparent;
+.turret {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  translate: -50% 0;
+  background-color: rgb(115, 111, 102);
+  width: calc(var(--header-height) * 2);
+  height: calc(var(--header-height) * 2);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  transition: rotate 150ms ease;
+  z-index: 1;
+}
+
+.turret-barrel {
+  position: absolute;
+  width: calc(var(--header-height) * 0.25);
+  height: calc(var(--header-height) * 1.5);
+  background-color: inherit;
+  transition: translate 150ms ease;
+}
+
+.bullet {
+  position: fixed;
+  width: calc(var(--header-height) * 0.25);
+  height: calc(var(--header-height) * 0.5);
+  background-color: red;
+  border-radius: 50%;
+  z-index: 12;
+  transition: translate 600ms linear;
+  z-index: 0;
+}
+
+.turret.aiming > .turret-barrel {
+  translate: 0 -50%;
+}
+
+footer {
+  align-items: center;
+  justify-content: center;
+  font-size: calc(var(--header-height) / 2);
+  font-weight: bold;
+  letter-spacing: 0.25rem;
+}
+
+#health-bar {
+  background-color: green;
   width: 100%;
-  /* border: 1px solid #ffffff22; */
+  height: 100%;
+  display: flex;
+  transform-origin: left;
+  transition: scale 300ms ease;
+}
+
+footer::after {
+  content: 'HEALTH';
+  position: absolute;
+  color:rgba(220, 220, 220, 0.6);
+  
+}
+
+@keyframes flash-wrong {
+  from {
+    color: unset;
+  }
+  to {
+    color: red;
+  }
+}
+
+@keyframes descend {
+  from {
+    top: var(--header-height);
+  }
+  to {
+    top: calc(var(--actual-height) - (var(--header-height) * 2));
+  }
 }
