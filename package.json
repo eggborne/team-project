@@ -1,5 +1,5 @@
 {
-  "name": "new-template",
+  "name": "word-armada",
   "version": "1.0.0",
   "description": "",
   "private": true,
@@ -12,14 +12,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/eggborne/webpack-5-template.git"
+    "url": "git+https://github.com/eggborne/word-armada.git"
   },
-  "author": "mike@mikedonovan.dev",
+  "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/eggborne/webpack-5-template/issues"
+    "url": "https://github.com/eggborne/word-armada/issues"
   },
-  "homepage": "https://github.com/eggborne/webpack-5-template#readme",
+  "homepage": "https://github.com/eggborne/word-armada#readme",
   "jest": {
     "reporters": [
       "default",

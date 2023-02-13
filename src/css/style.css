@@ -1,12 +1,48 @@
 *, * * {
   box-sizing: border-box;
+  margin: 0;
 }
 
 body {
-  margin: 3rem;
   font-family: sans-serif;
+  background-color: #222;
+  color: #aaa;
+  height: 100vh;
 }
 
-p {
-  font-size: 2rem;
+main {
+  padding: 3rem;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: space-between;
+  height: 100%;
+}
+
+#test-area {
+  font-size: 3rem;
+  height: 12rem;
+  text-align: center;
+}
+
+#test-area.correct {
+  color: green;
+}
+
+#test-area.incorrect {
+  color: red;
+}
+
+#player-input-area {
+  text-align: center;
+  padding: 2rem;
+}
+
+#player-input {
+  all: unset;
+  font-size: 3rem;
+  text-align: center;
+  caret-color: transparent;
+  width: 100%;
+  /* border: 1px solid #ffffff22; */
 }

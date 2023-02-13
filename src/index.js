@@ -1,6 +1,8 @@
 import './css/style.css';
-
+import Game from './js/Game';
 window.addEventListener('load', () => {
-  document.body.innerHTML = '<p>Guacamole</p>';
+
+  let game = new Game();
+  game.showWord();
 });
 
