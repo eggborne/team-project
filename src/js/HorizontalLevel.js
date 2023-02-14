@@ -1,5 +1,5 @@
 import '../css/HorizontalLevel.css';
-import { randomInt } from '../js/util.js';
+import { randomInt } from './util.js';
 export default class HorizontalLevel {
   constructor(className) {
     document.body.classList = [className];
