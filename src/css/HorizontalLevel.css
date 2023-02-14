@@ -1,0 +1,69 @@
+body.horizontal-level main {
+  background-color: black;
+}
+
+body.horizontal-level .word-ship {
+  background-color: rgb(17, 55, 17);
+  border-radius: 75%;
+  min-height: unset !important;
+  height: 3rem !important;
+}
+
+body.horizontal-level .word-ship.descending.slowed {
+  background-color: pink;
+}
+
+body.horizontal-level .word-ship.slowed::before {
+  animation-duration: 1000ms;
+}
+
+body.horizontal-level .word-ship::before {
+  content: '';
+  position: absolute;
+  width: 30%;
+  height: 20%;
+  background-color: orange;
+  border-radius: 50%;
+  translate: -125% 0;
+  animation: spin 300ms linear infinite;
+  z-index: 0;
+}
+
+body.horizontal-level .word-ship.descending {
+  animation: slide-to-right var(--descend-speed) linear forwards;
+}
+
+body.horizontal-level .word-ship.defeated {
+  scale: 0;
+  opacity: 0;
+}
+
+body.horizontal-level .word-ship.detonated {
+  transition: scale 150ms ease, 
+    opacity 150ms ease,
+    background-color 150ms ease;
+  scale: 1.5;
+  opacity: 0;
+  background-color: orange;
+}
+
+body.horizontal-level .word-ship.targeted {
+  color: white;
+}
+
+@keyframes slide-to-right {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: calc(100vw - 100%) 0;
+  }
+}
+@keyframes spin {
+  from {
+    rotate: 0;
+  }
+  to {
+    rotate: 180deg;
+  }
+}
