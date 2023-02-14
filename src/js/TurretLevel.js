@@ -30,6 +30,7 @@ export default class TurretLevel {
   async destroyShipAction(ship) {
     ship.element.classList.add('frozen');
     let flySpeed = this.fireBullet(ship);
+    this.game.deleteShip(ship);
     await pause(flySpeed);
     this.game.destroyShip(ship, true);
   }

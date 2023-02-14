@@ -1,5 +1,5 @@
 import '../css/style.css';
-import { getWords, getSentence } from './api.js';
+import WordAPI from './WordApi';
 import WordShip from './WordShip';
 import { pause, randomInt, angleOfPointABFromXY, radToDeg } from './util.js';
 import SimplestLevel from './SimplestLevel.js';
@@ -7,6 +7,7 @@ import TurretLevel from './TurretLevel.js';
 
 export default class Game {
   constructor(levelObject) {
+    this.wordApi = new WordAPI();
     this.playerInput = '';
     this.score = 0;
     this.destroyedThisWave = 0;
@@ -102,6 +103,38 @@ export default class Game {
     });
   }
 
+  async loadLevel(level) {
+    let newLevelData = this.levels[level]();
+    newLevelData.game = this;
+    this.levelData[level] = newLevelData;
+    let possibleWordLengths = this.levelData[level].wordLengths;
+    let wordPoolSize = 200;
+    for (let i = 0; i < possibleWordLengths.length; i++) {
+      await this.fillDictionary(possibleWordLengths[i], wordPoolSize);
+    }
+  }
+
+  async fillDictionary(wordLength, max) {
+    let response = await this.wordApi.getWords(wordLength, max);
+    this.addUnusedWordsToDictionary(response, wordLength);
+  }
+
+  addUnusedWordsToDictionary(response, wordLength) {
+    let finalWordsArray = response.filter(word => {
+      let alpha = true;
+      let used = this.usedWords.includes(word);
+      for (const letter of word) {
+        if (!'abcdefghijklmnopqrstuvwxyz'.includes(letter)) {
+          alpha = false;
+        }
+      }
+      return !used && alpha;
+    });
+    this.dictionary[wordLength] = finalWordsArray;
+    console.log('final array is', finalWordsArray);
+    this.usedWords.push(...finalWordsArray);
+  }
+
   resetGame() {
     this.playerInput = '';
     this.score = 0;
@@ -134,11 +167,18 @@ export default class Game {
     return Math.floor(100 - ((totalWordsLeft / totalWordsInRound) * 100));
   }
 
-  async destroyShip(ship, creditPlayer) {
+  deleteShip(ship) {
     this.targetedWordShips.splice(this.targetedWordShips.indexOf(ship), 1);
     this.activeWordShips.splice(this.activeWordShips.indexOf(ship), 1);
-    document.getElementById('input-display').innerText = this.playerInput;
-    document.getElementById('input-display').classList.add('correct');
+    // document.getElementById('input-display').innerText = this.playerInput;
+    // document.getElementById('input-display').classList.add('correct');
+  }
+
+  async destroyShip(ship, creditPlayer) {
+    // this.targetedWordShips.splice(this.targetedWordShips.indexOf(ship), 1);
+    // this.activeWordShips.splice(this.activeWordShips.indexOf(ship), 1);
+    // document.getElementById('input-display').innerText = this.playerInput;
+    // document.getElementById('input-display').classList.add('correct');
     if (creditPlayer) {
       this.destroyedThisWave++;
       this.score += ship.word.length * this.level;
@@ -151,13 +191,6 @@ export default class Game {
     ship.element.parentElement.removeChild(ship.element);
     document.getElementById('input-display').classList.remove('correct');
     document.getElementById('level-display').innerHTML = `Level ${this.level} <p>${this.getPercentageDone()}%</p>`;
-
-  }
-
-  async fillDictionary(wordLength, max) {
-    await getWords(wordLength, max).then((response) => {
-      this.addWordsToDictionary(response, wordLength);
-    });
   }
 
   dictionaryEmpty() {
@@ -168,24 +201,6 @@ export default class Game {
       }
     }
     return empty;
-  }
-
-  addWordsToDictionary(response, wordLength) {
-    let newWords = response;
-    let finalWordsArray = newWords.map(wordEntry => wordEntry = wordEntry.word);
-    finalWordsArray = finalWordsArray.filter(word => {
-      let alpha = true;
-      let used = this.usedWords.includes(word);
-      for (const letter of word) {
-        if (!'abcdefghijklmnopqrstuvwxyz'.includes(letter)) {
-          alpha = false;
-        }
-      }
-      return !used && alpha;
-    });
-    finalWordsArray = finalWordsArray.sort(() => .5 - Math.random()).slice(0, this.levelData[this.level].wordsPerLengthInWave);
-    this.dictionary[wordLength] = finalWordsArray;
-    this.usedWords.push(...finalWordsArray);
   }
 
   matchesSoFar(targetWord) {
@@ -212,6 +227,7 @@ export default class Game {
       newWordShip.element.classList.remove('obscured');
     }, 10);
     newWordShip.element.addEventListener('animationend', (e) => {
+      this.deleteShip(newWordShip);
       this.destroyShip(newWordShip);
       if (this.health - (newWordShip.word.length * 10) > 0) {
         this.health -= newWordShip.word.length * 2;
@@ -274,15 +290,9 @@ export default class Game {
     document.getElementById("restart-button").innerText = `Restart`;
   }
 
-  async loadLevel(level) {
-    let newLevelData = this.levels[level]();
-    newLevelData.game = this;
-    this.levelData[level] = newLevelData;
-    let possibleWordLengths = this.levelData[level].wordLengths;
-    let wordPoolSize = 200;
-    for (let i = 0; i < possibleWordLengths.length; i++) {
-      await this.fillDictionary(possibleWordLengths[i], wordPoolSize);
-    }
-  }
 }
+
+// loadLevel
+// calls fillDictionary
+// calls addUnusedWordsToDictionary
 

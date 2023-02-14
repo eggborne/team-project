@@ -138,7 +138,7 @@ main, #input-display {
 }
 
 .word-ship.frozen {
-  animation-play-state: paused;
+  animation-play-state: paused !important;
   text-shadow: none !important;
 }
 
