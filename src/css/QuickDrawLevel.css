@@ -1,0 +1,72 @@
+body.quick-draw-level main {
+  background-color: darkslateblue;
+  image-rendering: pixelated;
+}
+
+body.quick-draw-level #kirby {
+  position: absolute;
+  top: 55%;
+  left: 15%;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  width: 16rem;
+  height: 16rem;
+}
+
+body.quick-draw-level .word-ship {
+  translate: -50% -50% !important;
+  min-height: unset;  
+}
+
+body.quick-draw-level .enemy {
+  background-repeat: no-repeat;
+  background-size: 100%;
+  width: 16rem;
+  height: 16rem;
+}
+
+body.quick-draw-level .enemy.dying {
+  animation: dying 1000ms ease-in-out forwards;
+}
+
+body.quick-draw-level .word-ship.descending {
+  animation: no-animation var(--descend-speed) ease-in forwards;
+}
+
+body.quick-draw-level .word-ship.defeated {
+  scale: 1;
+  opacity: 1;
+}
+
+body.quick-draw-level .word-ship.detonated {
+  transition: scale 150ms ease, 
+    opacity 150ms ease,
+    background-color 150ms ease;
+  scale: 1;
+  opacity: 1;
+  background-color: transparent;
+}
+
+body.quick-draw-level .word-ship.targeted {
+  color: white;
+}
+
+@keyframes no-animation {
+  from {
+    pointer-events: none;
+  }
+  to {
+    pointer-events: none;
+  }
+}
+
+@keyframes dying {
+  from {
+    translate: 0;
+    rotate: 0;
+  }
+  to {
+    translate: 100% -200%;
+    rotate: 360deg;
+  }
+}
