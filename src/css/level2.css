@@ -1,0 +1,51 @@
+body.level2 main {
+  background-color: transparent;
+}
+
+body {
+  background-image: linear-gradient(45deg, transparent 20%, black 25%, transparent 25%),
+    linear-gradient(-45deg, transparent 20%, black 25%, transparent 25%),
+    linear-gradient(-45deg, transparent 75%, black 80%, transparent 0),
+    radial-gradient(gray 2px, transparent 0);
+  background-size: 30px 30px, 30px 30px;
+}
+
+body.level2 .word-ship {
+  translate: -50% -50% !important;
+  min-height: unset;
+  background-color: rgb(17, 55, 17);
+}
+
+body.level2 .word-ship.descending {
+  animation: no-animation var(--descend-speed) ease-in forwards;
+}
+
+body.level2 .word-ship.defeated {
+  scale: 0;
+  opacity: 0;
+}
+
+body.level2 .word-ship.detonated {
+  transition: scale 150ms ease,
+    opacity 150ms ease,
+    background-color 150ms ease;
+  scale: 1.5;
+  opacity: 0;
+  background-color: orange;
+}
+
+body.level2 .word-ship.targeted {
+  color: white;
+}
+
+
+
+@keyframes no-animation {
+  from {
+    pointer-events: none;
+  }
+
+  to {
+    pointer-events: none;
+  }
+}
