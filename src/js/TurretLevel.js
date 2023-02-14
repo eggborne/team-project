@@ -31,7 +31,7 @@ export default class TurretLevel {
     ship.element.classList.add('frozen');
     let flySpeed = this.fireBullet(ship);
     await pause(flySpeed);
-    await this.game.destroyShip(ship, true);
+    this.game.destroyShip(ship, true);
   }
 
   loseFocusAction(ship) {
