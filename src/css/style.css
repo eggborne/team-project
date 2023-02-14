@@ -235,44 +235,6 @@ main, #input-display {
   padding: 2rem;
 }
 
-.turret {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  translate: -50% 0;
-  background-color: rgb(115, 111, 102);
-  width: calc(var(--header-height) * 2);
-  height: calc(var(--header-height) * 2);
-  border-radius: 50%;
-  display: flex;
-  justify-content: center;
-  transition: rotate 150ms ease;
-  z-index: 1;
-}
-
-.turret-barrel {
-  position: absolute;
-  width: calc(var(--header-height) * 0.25);
-  height: calc(var(--header-height) * 1.5);
-  background-color: inherit;
-  transition: translate 150ms ease;
-}
-
-.bullet {
-  position: fixed;
-  width: calc(var(--header-height) * 0.25);
-  height: calc(var(--header-height) * 0.5);
-  background-color: red;
-  border-radius: 50%;
-  z-index: 12;
-  transition: translate 600ms linear;
-  z-index: 0;
-}
-
-.turret.aiming > .turret-barrel {
-  translate: 0 -50%;
-}
-
 footer {
   align-items: center;
   justify-content: center;

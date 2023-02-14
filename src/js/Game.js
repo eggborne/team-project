@@ -24,7 +24,7 @@ export default class Game {
       () => new TurretLevel('turret-level'),
     ];
     this.levelData = [];
-    
+
     document.getElementById('start-button').addEventListener('click', async (e) => {
       e.preventDefault();
       e.target.disabled = true; // prevents Enter key 'clicking' it when invisible
@@ -77,7 +77,7 @@ export default class Game {
                   //
                 }
               }
-            } else {
+            } else { // made a typo
               this.targetedWordShips.splice(this.targetedWordShips.indexOf(ship), 1);
               ship.element.classList.remove('targeted');
               this.levelData[this.level].loseFocusAction(ship); // defined by Level
@@ -131,72 +131,6 @@ export default class Game {
       totalWordsLeft += this.dictionary[wordLength].length;
     }
     return Math.floor(100 - ((totalWordsLeft / totalWordsInRound) * 100));
-  }
-
-  aimTurret(targetShip, forceAngle) {
-    let turretElement = document.getElementById('main-turret');
-    let newAngle;
-    if (forceAngle !== undefined) {
-      newAngle = forceAngle;
-    } else {
-      let targetElement = targetShip.element;
-      let turretPosition = {
-        x: turretElement.offsetLeft,
-        y: turretElement.offsetTop,
-      };
-      let targetPosition = {
-        x: targetElement.offsetLeft + (targetShip.width / 2),
-        y: targetElement.offsetTop,
-      };
-      console.log('aiming from', turretPosition, 'to', targetPosition);
-      newAngle = radToDeg(angleOfPointABFromXY(
-        targetPosition.x,
-        targetPosition.y,
-        turretPosition.x,
-        turretPosition.y
-      ));
-    }
-    turretElement.style.rotate = `${newAngle}deg`;
-    this.turretAngle = newAngle;
-  }
-
-  fireBullet(targetShip) {
-    let turretElement = document.getElementById('main-turret');
-    let bullet = document.createElement('div');
-    let pointBlank = false;
-    bullet.classList.add('bullet');
-    document.querySelector('main').append(bullet);
-    let targetElement = targetShip.element;
-    let turretPosition = {
-      x: turretElement.offsetLeft,
-      y: turretElement.offsetTop + (turretElement.offsetHeight / 2),
-    };
-    let targetPosition = {
-      x: targetElement.offsetLeft + (targetShip.width / 2),
-      y: targetElement.offsetTop + (targetElement.offsetHeight),
-    };
-    bullet.style.rotate = `${this.turretAngle}deg`;
-    bullet.style.left = (turretPosition.x - (bullet.offsetWidth / 2)) + 'px';
-    bullet.style.top = (turretPosition.y - (bullet.offsetHeight / 2)) + 'px';
-    let moveXAmount = targetPosition.x - turretPosition.x;
-    let moveYAmount = targetPosition.y - turretPosition.y;
-    bullet.style.translate = `${moveXAmount}px ${moveYAmount}px`;
-    if (Math.abs(moveYAmount) < window.innerHeight / 2) {
-      console.log('closer bullet moves faster!');
-      bullet.style.transitionDuration = '300ms';
-      pointBlank = true;
-    }
-    bullet.addEventListener('transitionend', (e) => {
-      e.target.parentElement.removeChild(e.target);
-    });
-    return pointBlank ? 300 : 600;
-  }
-
-  async showTypoAnimation() {
-    document.getElementById('input-display').innerText = this.playerInput;
-    document.getElementById('input-display').classList.add('incorrect');
-    await pause(200);
-    document.getElementById('input-display').classList.remove('incorrect');
   }
 
   async destroyShip(ship, creditPlayer) {
@@ -344,7 +278,6 @@ export default class Game {
     let wordPoolSize = 200;
     for (let i = 0; i < possibleWordLengths.length; i++) {
       await this.fillDictionary(possibleWordLengths[i], wordPoolSize);
-      
     }
   }
 }
