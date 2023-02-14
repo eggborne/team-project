@@ -1,6 +1,10 @@
 body.quick-draw-level main {
   background-color: darkslateblue;
   image-rendering: pixelated;
+  background-image: url(../media/quickdraw/quickdrawbg.png);
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
 }
 
 body.quick-draw-level #kirby {
@@ -15,7 +19,10 @@ body.quick-draw-level #kirby {
 
 body.quick-draw-level .word-ship {
   translate: -50% -50% !important;
-  min-height: unset;  
+  min-height: unset;
+  text-shadow: 0 0 5px black;
+  font-weight: bold;
+  color: white;
 }
 
 body.quick-draw-level .enemy {
@@ -23,6 +30,7 @@ body.quick-draw-level .enemy {
   background-size: 100%;
   width: 16rem;
   height: 16rem;
+  transform-origin: 75% 75%;
 }
 
 body.quick-draw-level .enemy.dying {
@@ -66,7 +74,7 @@ body.quick-draw-level .word-ship.targeted {
     rotate: 0;
   }
   to {
-    translate: 100% -200%;
-    rotate: 360deg;
+    translate: 200% -100%;
+    rotate: 90deg;
   }
 }
