@@ -1,9 +1,10 @@
 body.dolphin-level main {
+  --bg-width: calc(100% * (896/546));
   background-color: black;
   image-rendering: pixelated;
   background-image: url("../media/dolphinbg2.png");
   background-repeat: repeat-x;
-  background-size: cover;
+  background-size: 100% 100%;
   animation: scroll-bg 1000ms linear infinite forwards;
 }
 
@@ -21,7 +22,6 @@ body.dolphin-level .word-ship {
   padding: 0;
   padding-left: 6rem;
   color: white !important;
-  transition: 
 }
 
 body.dolphin-level .word-ship.descending {

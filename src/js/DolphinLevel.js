@@ -29,7 +29,7 @@ export default class DolphinLevel {
 
   placeWordShip() {
     let shipPositionX = '-18rem';
-    let shipPositionY = randomInt(window.innerHeight * 0.2, window.innerHeight * 0.8) + 'px';
+    let shipPositionY = randomInt(window.innerHeight * 0.2, window.innerHeight * 0.75) + 'px';
     return {
       x: shipPositionX,
       y: shipPositionY,
