@@ -7,11 +7,12 @@ export default class DolphinLevel {
     this.wordsPerLengthInWave = 6;
     this.wordLengths = [5,6,7];
     this.shipSpeed = 5000;
-    this.launchFrequency = 3000;
+    this.launchFrequency = 1000;
   }
 
   firstFocusAction(ship) {
     //
+    ship.element.style.animationDuration = '1000ms';
   }
 
   maintainFocusAction(ship) {
