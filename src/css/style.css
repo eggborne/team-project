@@ -113,7 +113,7 @@ main, #input-display {
   --descend-speed: 3000ms;
   position: absolute;
   font-size: 2rem;
-  transition: scale var(--animation-speed) ease, opacity var(--animation-speed) ease;
+  transition: scale 300ms ease, opacity 300ms ease;
   padding: 1rem 1.5rem;
   display: flex;
   align-items: center;
@@ -256,7 +256,6 @@ footer::after {
   content: 'HEALTH';
   position: absolute;
   color:rgba(220, 220, 220, 0.6);
-  
 }
 
 @keyframes flash-wrong {

@@ -1,0 +1,40 @@
+body.simplest-level main {
+  background-color: black;
+}
+
+body.simplest-level .word-ship {
+  translate: -50% -50% !important;
+  min-height: unset;
+  background-color: rgb(17, 55, 17);
+}
+
+body.simplest-level .word-ship.descending {
+  animation: no-animation var(--descend-speed) ease-in forwards;
+}
+
+body.simplest-level .word-ship.defeated {
+  scale: 0;
+  opacity: 0;
+}
+
+body.simplest-level .word-ship.detonated {
+  transition: scale 150ms ease, 
+    opacity 150ms ease,
+    background-color 150ms ease;
+  scale: 1.5;
+  opacity: 0;
+  background-color: orange;
+}
+
+body.simplest-level .word-ship.targeted {
+  color: white;
+}
+
+@keyframes no-animation {
+  from {
+    pointer-events: none;
+  }
+  to {
+    pointer-events: none;
+  }
+}

@@ -3,6 +3,7 @@ import {
   pause,
   radToDeg,
   angleOfPointABFromXY,
+  randomInt,
 } from './util.js';
 
 export default class TurretLevel {
@@ -37,6 +38,15 @@ export default class TurretLevel {
     ship.focusLayer.classList.add('doomed');
     this.aimTurret(undefined, 0);
     ship.focusLayer.classList.remove('doomed');
+  }
+
+  placeWordShip() {
+    let shipPositionX = randomInt(0, (window.innerWidth - this.width)) + 'px';
+    let shipPositionY = 0;
+    return {
+      x: shipPositionX,
+      y: shipPositionY,
+    };
   }
 
   aimTurret(targetShip, forceAngle) {

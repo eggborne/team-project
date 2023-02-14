@@ -2,6 +2,7 @@ import '../css/style.css';
 import { getWords, getSentence } from './api.js';
 import WordShip from './WordShip';
 import { pause, randomInt, angleOfPointABFromXY, radToDeg } from './util.js';
+import SimplestLevel from './SimplestLevel.js';
 import TurretLevel from './TurretLevel.js';
 
 export default class Game {
@@ -10,7 +11,7 @@ export default class Game {
     this.score = 0;
     this.destroyedThisWave = 0;
     this.health = 100;
-    this.level = 1;
+    this.level = 2;
     this.dictionary = {};
     this.activeWordShips = [];
     this.targetedWordShips = [];
@@ -18,9 +19,9 @@ export default class Game {
     this.turretAngle = 0;
     this.interval;
 
-    this.animationSpeed = 300;
     this.levels = [
       undefined,
+      () => new SimplestLevel('simplest-level'),
       () => new TurretLevel('turret-level'),
     ];
     this.levelData = [];
@@ -199,6 +200,9 @@ export default class Game {
   launchWordShip() {
     let newWord = this.selectRandomWord();
     let newWordShip = new WordShip(newWord);
+    let newShipPosition = this.levelData[this.level].placeWordShip();
+    newWordShip.element.style.left = newShipPosition.x;
+    newWordShip.element.style.top = newShipPosition.y;
     newWordShip.element.style.setProperty('--descend-speed', this.levelData[this.level].shipSpeed + 'ms');
     this.activeWordShips.push(newWordShip);
     if (this.dictionaryEmpty()) {
