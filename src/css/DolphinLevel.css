@@ -1,0 +1,67 @@
+body.dolphin-level main {
+  background-color: black;
+  image-rendering: pixelated;
+  background-image: url("../media/dolphinbg.png");
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+body.dolphin-level .word-ship {
+  background-color: transparent;
+  background-image: url("../media/dolphin.gif");
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 18rem !important;
+  min-height: unset !important;
+  height: calc(18rem / (156/56));
+}
+
+body.dolphin-level .word-ship {
+  padding: 0;
+  padding-left: 6rem;
+  color: white !important;
+  transition: 
+}
+
+body.dolphin-level .word-ship.descending {
+  animation: swim-to-right var(--descend-speed) linear forwards,
+    bob 1000ms ease-in-out alternate infinite;
+}
+
+body.dolphin-level .word-ship.defeated {
+  animation-play-state: paused;
+  transition: all 600ms ease;
+  scale: 0;
+  opacity: 0;
+  rotate: 180deg;
+}
+
+body.dolphin-level .word-ship.detonated {
+  transition: scale 150ms ease, 
+    opacity 150ms ease,
+    filter 150ms ease;
+  scale: 1.5;
+  opacity: 0;
+  filter: blur(2rem);
+}
+
+body.dolphin-level .word-ship.targeted {
+  color: white;
+}
+
+@keyframes swim-to-right {
+  from {
+    translate: 0 0;
+  }
+  to {
+    translate: 100vw 0;
+  }
+}
+@keyframes bob {
+  from {
+    margin-top: -2rem;
+  }
+  to {
+    margin-top: 2rem;
+  }
+}
