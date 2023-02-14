@@ -12,7 +12,7 @@ export default class DolphinLevel {
 
   firstFocusAction(ship) {
     //
-    ship.element.style.animationDuration = '1000ms';
+    
   }
 
   maintainFocusAction(ship) {
