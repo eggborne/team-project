@@ -57,10 +57,10 @@ export default class Game {
           for (const ship of this.activeWordShips) {
             let matches = this.matchesSoFar(ship.word);
             if (matches) {
-              this.targetedWordShips.push(ship); //
-              ship.element.classList.add('targeted'); //
-              ship.focusLayer.innerText = this.playerInput; // always happens
-              this.levelData[this.level].firstFocusAction(ship); // defined by Level
+              this.targetedWordShips.push(ship);
+              ship.element.classList.add('targeted');
+              ship.focusLayer.innerText = this.playerInput;
+              this.levelData[this.level].firstFocusAction(ship);
             }
           }
         } else { // one or more is targeted
@@ -68,11 +68,12 @@ export default class Game {
             let matches = this.matchesSoFar(ship.word);
             if (matches) {
               ship.focusLayer.innerText = this.playerInput;
-              this.levelData[this.level].maintainFocusAction(ship); // defined by Level
+              document.getElementById('input-display').innerText = this.playerInput;
+              this.levelData[this.level].maintainFocusAction(ship);
               if (this.playerInput.length === ship.word.length) {
-                document.getElementById('input-display').innerText = this.playerInput;
                 document.getElementById('input-display').classList.add('correct');
-                this.levelData[this.level].destroyShipAction(ship); // defined by Level
+                this.deleteShip(ship);
+                await this.levelData[this.level].destroyShipAction(ship); 
                 if (ship.lastInWave && this.dictionaryEmpty()) {
                   this.displayLevelClearModal();
                 } else {
@@ -82,7 +83,7 @@ export default class Game {
             } else { // made a typo
               this.targetedWordShips.splice(this.targetedWordShips.indexOf(ship), 1);
               ship.element.classList.remove('targeted');
-              this.levelData[this.level].loseFocusAction(ship); // defined by Level
+              this.levelData[this.level].loseFocusAction(ship);
             }
           }
         }
@@ -91,7 +92,6 @@ export default class Game {
           this.playerInput = '';
           document.getElementById('main-turret').classList.remove('aiming');
         }
-
         document.getElementById('input-display').innerText = this.playerInput;
       } else if (e.code === 'Space' || e.key === ' ') {
         if (!document.getElementById('start-button').classList.contains('hidden')) {
@@ -131,7 +131,6 @@ export default class Game {
       return !used && alpha;
     });
     this.dictionary[wordLength] = finalWordsArray;
-    console.log('final array is', finalWordsArray);
     this.usedWords.push(...finalWordsArray);
   }
 
@@ -170,15 +169,11 @@ export default class Game {
   deleteShip(ship) {
     this.targetedWordShips.splice(this.targetedWordShips.indexOf(ship), 1);
     this.activeWordShips.splice(this.activeWordShips.indexOf(ship), 1);
-    // document.getElementById('input-display').innerText = this.playerInput;
-    // document.getElementById('input-display').classList.add('correct');
+    document.getElementById('input-display').innerText = this.playerInput;
+    document.getElementById('input-display').classList.add('correct');
   }
 
   async destroyShip(ship, creditPlayer) {
-    // this.targetedWordShips.splice(this.targetedWordShips.indexOf(ship), 1);
-    // this.activeWordShips.splice(this.activeWordShips.indexOf(ship), 1);
-    // document.getElementById('input-display').innerText = this.playerInput;
-    // document.getElementById('input-display').classList.add('correct');
     if (creditPlayer) {
       this.destroyedThisWave++;
       this.score += ship.word.length * this.level;
@@ -190,7 +185,7 @@ export default class Game {
     await pause(300);
     ship.element.parentElement.removeChild(ship.element);
     document.getElementById('input-display').classList.remove('correct');
-    document.getElementById('level-display').innerHTML = `Level ${this.level} <p>${this.getPercentageDone()}%</p>`;
+    // document.getElementById('level-display').innerHTML = `Level ${this.level} <p>${this.getPercentageDone()}%</p>`;
   }
 
   dictionaryEmpty() {
