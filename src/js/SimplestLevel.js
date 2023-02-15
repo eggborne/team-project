@@ -9,6 +9,10 @@ export default class SimplestLevel {
     this.launchFrequency = 3000;
   }
 
+  wordShipLaunchAction(ship) {
+    //
+  }
+
   firstFocusAction(ship) {
     //
   }
@@ -21,7 +25,15 @@ export default class SimplestLevel {
     this.game.destroyShip(ship, true);
   }
 
+  detonateShipAction(ship) {
+    //
+  }
+
   loseFocusAction(ship) {
+    //
+  }
+
+  loseAllTargetsAction() {
     //
   }
 
