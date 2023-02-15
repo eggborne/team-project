@@ -2,7 +2,7 @@ body.dolphin-level main {
   --bg-width: calc(100% * (896/546));
   background-color: black;
   image-rendering: pixelated;
-  background-image: url("../media/dolphinbg2.png");
+  background-image: url("../media/dolphin/dolphinbg2.png");
   background-repeat: repeat-x;
   background-size: 100% 100%;
   animation: scroll-bg 1000ms linear infinite forwards;
@@ -10,7 +10,7 @@ body.dolphin-level main {
 
 body.dolphin-level .word-ship {
   background-color: transparent;
-  background-image: url("../media/dolphin.gif");
+  background-image: url("../media/dolphin/dolphin.gif");
   background-repeat: no-repeat;
   background-size: cover;
   width: 18rem !important;
@@ -24,23 +24,42 @@ body.dolphin-level .word-ship {
   color: white !important;
 }
 
+body.dolphin-level .alien {
+  position: fixed;
+  background-image: url("../media/dolphin/alien.gif");
+  background-repeat: no-repeat;
+  background-size: cover;
+  width: 8rem;
+  height: 16rem;
+  translate: 100% -50%;
+  transition: translate 300ms ease, scale 300ms ease, rotate 300ms ease;
+  animation: bob 1000ms ease-in-out alternate infinite;
+}
+
+body.dolphin-level .alien.showing {
+  translate: 0 -50%;
+}
+body.dolphin-level .alien.dying {
+  scale: 0;
+  rotate: 180deg;
+}
+
 body.dolphin-level .word-ship::after {
   content: '';
-  width: 2rem;
-  height: 1rem;
-  background-color: orange;
-  border-radius: 50%;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  width: 8rem !important;
+  height: 8rem !important;
   top: 50%;
   right: 0;
   opacity: 0;
   transform: translateX(0);
-  transition: transform 300ms linear;
-  
+  transition: transform 600ms linear;
 }
-body.dolphin-level .word-ship.defeated::after {
+body.dolphin-level .word-ship.firing::after {
   opacity: 1;
+  background-image: url("../media/dolphin/sonar.gif");
   transform: translateX(100vw);
-  transition-delay: 0ms !important;
 }
 
 
@@ -52,10 +71,8 @@ body.dolphin-level .word-ship.descending {
 body.dolphin-level .word-ship.defeated {
   animation-play-state: paused;
   transition: all 600ms ease;
-  transition-delay: 300ms;
-  scale: 1;
+  scale: 0;
   opacity: 0;
-  /* rotate: 180deg; */
 }
 
 body.dolphin-level .word-ship.detonated {
@@ -76,7 +93,7 @@ body.dolphin-level .word-ship.targeted {
     translate: 0 0;
   }
   to {
-    translate: 100vw 0;
+    translate: calc(100vw - 25%) 0;
   }
 }
 @keyframes bob {

@@ -10,9 +10,19 @@ export default class DolphinLevel {
     this.launchFrequency = 1800;
   }
 
+  wordShipLaunchAction(ship) {
+    ship.alienElement = document.createElement('div');
+    ship.alienElement.classList.add('alien');
+    ship.alienElement.style.top = ship.element.style.top;
+    ship.alienElement.style.right = (randomInt(0, 30) * 0.1) + 'rem';
+    document.querySelector('main').append(ship.alienElement);
+    setTimeout(() => {
+      ship.alienElement.classList.add('showing');
+    }, 10);
+  }
+
   firstFocusAction(ship) {
     //
-    
   }
 
   maintainFocusAction(ship) {
@@ -20,7 +30,9 @@ export default class DolphinLevel {
   }
 
   async destroyShipAction(ship) {
-    await pause(1000);
+    ship.element.classList.add('firing');
+    await pause(300);
+    ship.alienElement.classList.add('dying');
     this.game.destroyShip(ship, true);
   }
 
