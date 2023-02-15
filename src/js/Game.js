@@ -66,7 +66,6 @@ export default class Game {
     });
 
     document.body.addEventListener('keydown', e => {
-      console.log('space', this.activeWordShips);
       if (!this.activeWordShips.length && (e.code === 'Space' || e.key === ' ')) {
         e.preventDefault();
         if (!document.getElementById('start-button').classList.contains('hidden')) {
@@ -205,10 +204,7 @@ export default class Game {
     for (const wordLength in this.dictionary) {
       totalWordsLeft += this.dictionary[wordLength].length;
     }
-    console.log('adding active:', this.activeWordShips.length, ' to totalWordsLeft:', totalWordsLeft);
     totalWordsLeft += this.activeWordShips.length;
-    console.log('totalWordsLeft: ' + totalWordsLeft);
-    console.log('totalWordsInRound: ' + totalWordsInRound);
     return Math.floor(100 - ((totalWordsLeft / totalWordsInRound) * 100));
   }
 
@@ -295,7 +291,6 @@ export default class Game {
     let possibleLengths = [...this.levelData[this.level].wordLengths];
     for (const wordLengthIndex in possibleLengths) {
       if (this.dictionary[possibleLengths[wordLengthIndex]].length === 0) {
-        console.log('removing length', possibleLengths[wordLengthIndex], 'from random choices because empty');
         possibleLengths.splice(wordLengthIndex, 1);
       }
     }

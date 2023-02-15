@@ -74,7 +74,6 @@ export default class TurretLevel {
         x: targetElement.offsetLeft + (targetShip.width / 2),
         y: targetElement.offsetTop,
       };
-      console.log('aiming from', turretPosition, 'to', targetPosition);
       newAngle = radToDeg(angleOfPointABFromXY(
         targetPosition.x,
         targetPosition.y,

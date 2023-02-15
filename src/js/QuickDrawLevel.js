@@ -29,7 +29,6 @@ export default class QuickDrawLevel {
       'metaknight'
     ];
     
-    console.log('images', this.images);
     this.kirbyElement = document.createElement('div');
     this.kirbyElement.id = 'kirby';
     this.kirbyElement.style.backgroundImage = `url(${this.images['samuraikirby/waiting.png']})`;
@@ -42,7 +41,6 @@ export default class QuickDrawLevel {
   createEnemyElement() {
     this.enemyElement = document.createElement('div');
     this.randomEnemy = this.enemies[randomInt(0, this.enemies.length - 1)];
-    console.log('creating', this.randomEnemy);
     this.enemyElement.style.backgroundImage = `url(${this.images[this.randomEnemy + '/waiting.png']})`;
     this.enemyElement.classList.add('enemy');
     this.enemyElement.id = this.randomEnemy;
