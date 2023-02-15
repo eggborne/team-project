@@ -24,6 +24,26 @@ body.dolphin-level .word-ship {
   color: white !important;
 }
 
+body.dolphin-level .word-ship::after {
+  content: '';
+  width: 2rem;
+  height: 1rem;
+  background-color: orange;
+  border-radius: 50%;
+  top: 50%;
+  right: 0;
+  opacity: 0;
+  transform: translateX(0);
+  transition: transform 300ms linear;
+  
+}
+body.dolphin-level .word-ship.defeated::after {
+  opacity: 1;
+  transform: translateX(100vw);
+  transition-delay: 0ms !important;
+}
+
+
 body.dolphin-level .word-ship.descending {
   animation: swim-to-right var(--descend-speed) linear forwards,
     bob 1000ms ease-in-out alternate infinite;
@@ -32,9 +52,10 @@ body.dolphin-level .word-ship.descending {
 body.dolphin-level .word-ship.defeated {
   animation-play-state: paused;
   transition: all 600ms ease;
-  scale: 0;
+  transition-delay: 300ms;
+  scale: 1;
   opacity: 0;
-  rotate: 180deg;
+  /* rotate: 180deg; */
 }
 
 body.dolphin-level .word-ship.detonated {

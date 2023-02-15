@@ -73,8 +73,6 @@ export default class QuickDrawLevel {
     await pause(1000);
     this.enemyElement.parentElement.removeChild(this.enemyElement);
     this.kirbyElement.style.backgroundImage = `url(${this.images['samuraikirby/waiting.png']})`;
-    await pause(500);
-    this.createEnemyElement();
   }
 
   loseFocusAction(ship) {

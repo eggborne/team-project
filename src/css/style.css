@@ -221,7 +221,8 @@ main, #input-display {
   left: 50%;
   top: calc(var(--header-height) * 2);
   transform: translate(-50%, 0);
-  background-color: var(--secondary-bg-color);
+  /* background-color: var(--secondary-bg-color); */
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   flex-direction: column;
   align-items: center;

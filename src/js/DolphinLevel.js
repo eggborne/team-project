@@ -1,5 +1,5 @@
 import '../css/DolphinLevel.css';
-import { randomInt } from './util.js';
+import { randomInt, pause } from './util.js';
 
 export default class DolphinLevel {
   constructor(className) {
@@ -20,6 +20,7 @@ export default class DolphinLevel {
   }
 
   async destroyShipAction(ship) {
+    await pause(1000);
     this.game.destroyShip(ship, true);
   }
 

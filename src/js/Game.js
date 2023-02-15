@@ -17,7 +17,7 @@ export default class Game {
     this.score = 0;
     this.destroyedThisWave = 0;
     this.health = 100;
-    this.level = 1;
+    this.level = 4;
     this.dictionary = {};
     this.activeWordShips = [];
     this.targetedWordShips = [];
@@ -37,6 +37,7 @@ export default class Game {
     this.levelData = [];
 
     document.getElementById('start-button').addEventListener('click', async (e) => {
+      console.warn('Start button clicked');
       e.preventDefault();
       e.target.disabled = true; // prevents Enter key 'clicking' it when invisible
       e.target.classList.add('hidden');
@@ -67,10 +68,13 @@ export default class Game {
     document.body.addEventListener('keydown', e => {
       console.log('space', this.activeWordShips);
       if (!this.activeWordShips.length && (e.code === 'Space' || e.key === ' ')) {
+        e.preventDefault();
         if (!document.getElementById('start-button').classList.contains('hidden')) {
           document.getElementById('start-button').click();
+          document.getElementById('player-input').value = '';
         } else if (!document.getElementById('level-clear-modal').classList.contains('hidden')) {
           document.getElementById('next-level-button').click();
+          document.getElementById('player-input').value = '';
         }
       }
     });
@@ -139,6 +143,7 @@ export default class Game {
   }
 
   async loadLevel(level) {
+    console.warn('Loading level', level);
     let newLevelData = this.levels[level]();
     newLevelData.game = this;
     this.levelData[level] = newLevelData;
@@ -215,7 +220,7 @@ export default class Game {
       document.getElementById('score-display').innerHTML = `Score: <p>${this.score}</p>`;
       ship.element.classList.add('defeated');
       if (!this.activeWordShips.length && this.dictionaryEmpty()) {
-        pause(1000).then(() => {
+        pause(1200).then(() => {
           this.displayLevelClearModal();
         });
       }
@@ -268,7 +273,9 @@ export default class Game {
         this.displayGameOverModal();
       }
       if (newWordShip.lastInWave) {
-        this.displayLevelClearModal();
+        pause(1200).then(() => {
+          this.displayLevelClearModal();
+        });
       }
     });
   }
