@@ -108,6 +108,9 @@ main {
 #start-button.hidden,
 #intro-message.hidden {
   opacity: 0;
+}
+#intro-message.hidden {
+  opacity: 0;
   display: none;
 }
 
