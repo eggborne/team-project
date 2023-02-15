@@ -15,8 +15,8 @@ const images = importAll(
 export default class QuickDrawLevel {
   constructor(className) {
     document.body.classList = [className];
-    this.wordsPerLengthInWave = 2;
-    this.wordLengths = [4];
+    this.wordsPerLengthInWave = 1;
+    this.wordLengths = [8];
     this.shipSpeed = 3000;
     this.launchFrequency = 5000;
     this.images = images;

@@ -4,10 +4,10 @@ import { randomInt } from './util.js';
 export default class DolphinLevel {
   constructor(className) {
     document.body.classList = [className];
-    this.wordsPerLengthInWave = 6;
+    this.wordsPerLengthInWave = 3;
     this.wordLengths = [5,6,7];
-    this.shipSpeed = 5000;
-    this.launchFrequency = 1000;
+    this.shipSpeed = 7200;
+    this.launchFrequency = 1800;
   }
 
   firstFocusAction(ship) {

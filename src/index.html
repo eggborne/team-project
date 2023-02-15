@@ -13,16 +13,18 @@
     <div id="level-display" class="hidden"></div>
   </header>
   <main>
-    <div id="input-display"></div>
     <div id="intro-message">Press space to start...</div>
-    <div id="main-turret" class="turret">
+    <!-- <div id="main-turret" class="turret">
       <div class="turret-barrel"></div>
+    </div> -->
+    <div id="player-input-area">
+      <input type="textarea" id="player-input">
     </div>
   </main>
   <div id="level-clear-modal" class="modal">
     <h1 class="modal-message"></h1>
     <p class="modal-details"></p>
-    <button class="modal-button" id="next-level-button"></button>
+    <button class="modal-button hidden" id="next-level-button"></button>
   </div>
   <div id="game-over-modal" class="modal">
     <h1 class="modal-message"></h1>

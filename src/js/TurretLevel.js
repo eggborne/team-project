@@ -14,7 +14,13 @@ export default class TurretLevel {
     this.shipSpeed = 5000;
     this.launchFrequency = 2000;
 
-    document.getElementById('main-turret').style.display = 'flex';
+    this.turretElement = document.createElement('div');
+    this.turretElement.classList.add('turret');
+    this.turretElement.id = 'main-turret';
+    this.turretElement.innerHTML = `
+      <div class="turret-barrel"></div>   
+    `;
+    document.querySelector('main').prepend(this.turretElement);
   }
 
   firstFocusAction(ship) {
@@ -38,6 +44,10 @@ export default class TurretLevel {
     ship.focusLayer.classList.add('doomed');
     this.aimTurret(undefined, 0);
     ship.focusLayer.classList.remove('doomed');
+  }
+
+  loseAllTargetsAction(ship) {
+    document.getElementById('main-turret').classList.remove('aiming');
   }
 
   placeWordShip() {
@@ -79,9 +89,8 @@ export default class TurretLevel {
   fireBullet(targetShip) {
     let turretElement = document.getElementById('main-turret');
     let bullet = document.createElement('div');
-    let pointBlank = false;
     bullet.classList.add('bullet');
-    document.querySelector('main').append(bullet);
+    document.querySelector('main').prepend(bullet);
     let targetElement = targetShip.element;
     let turretPosition = {
       x: turretElement.offsetLeft,
@@ -89,7 +98,7 @@ export default class TurretLevel {
     };
     let targetPosition = {
       x: targetElement.offsetLeft + (targetShip.width / 2),
-      y: targetElement.offsetTop + (targetElement.offsetHeight),
+      y: targetElement.offsetTop + (targetElement.offsetHeight / 2),
     };
     bullet.style.rotate = `${this.turretAngle}deg`;
     bullet.style.left = (turretPosition.x - (bullet.offsetWidth / 2)) + 'px';
@@ -97,15 +106,10 @@ export default class TurretLevel {
     let moveXAmount = targetPosition.x - turretPosition.x;
     let moveYAmount = targetPosition.y - turretPosition.y;
     bullet.style.translate = `${moveXAmount}px ${moveYAmount}px`;
-    if (Math.abs(moveYAmount) < window.innerHeight / 2) {
-      console.log('closer bullet moves faster!');
-      bullet.style.transitionDuration = '300ms';
-      pointBlank = true;
-    }
     bullet.addEventListener('transitionend', (e) => {
       e.target.parentElement.removeChild(e.target);
     });
-    return pointBlank ? 300 : 600;
+    return 300;
   }
 
 }

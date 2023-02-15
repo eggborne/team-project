@@ -38,9 +38,9 @@ body.dolphin-level .word-ship.defeated {
 }
 
 body.dolphin-level .word-ship.detonated {
-  transition: scale 150ms ease, 
-    opacity 150ms ease,
-    filter 150ms ease;
+  transition: scale 300ms ease, 
+    opacity 300ms ease,
+    filter 300ms ease;
   scale: 1.25;
   opacity: 0;
   filter: blur(2rem);
