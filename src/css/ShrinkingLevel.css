@@ -1,0 +1,76 @@
+body.shrinking-level main {
+  background-color: black;
+  background: radial-gradient(circle, rgba(2,0,36,1) 0%, rgba(175,103,1,1) 16%, rgba(114,187,1,1) 41%, rgba(1,101,191,1) 57%, rgba(0,161,226,1) 79%, rgba(226,0,194,1) 93%, rgba(255,0,0,1) 100%);
+}
+
+body.shrinking-level main.damaged {
+  animation: flashing-red 50ms infinite alternate;
+}
+
+body.shrinking-level main::before {
+  content: '';
+  position: absolute;
+  width: 120vmax;
+  height: 120vmax;
+  background: rgb(131,58,180);
+  background: linear-gradient(87deg, rgba(131,58,180,1) 0%, rgba(253,29,29,1) 50%, rgba(252,176,69,1) 100%);
+  opacity: 0.75;
+  animation: cycle-bg 2000ms ease infinite forwards;
+}
+
+body.shrinking-level .word-ship {
+  translate: -50% -50% !important;
+  min-height: unset;
+  background-color: transparent;
+}
+
+body.shrinking-level .word-ship.descending {
+  animation: shrink var(--descend-speed) linear forwards;
+}
+
+body.shrinking-level .word-ship.defeated {
+  animation-play-state: paused;
+  transition: all 500ms ease !important;
+  translate: 0 -100%;
+  opacity: 0;
+}
+
+body.shrinking-level .word-ship.detonated {
+  transition: scale 150ms ease, 
+    opacity 150ms ease,
+    background-color 150ms ease;
+  scale: 4;
+  opacity: 0;
+  background-color: green;
+}
+
+body.shrinking-level .word-ship.targeted {
+  color: white;
+}
+
+@keyframes shrink {
+  from {
+    scale: 16;
+  }
+  to {
+    scale: 0;
+  }
+}
+
+@keyframes cycle-bg {
+  from {
+    rotate: 0;
+  }
+  to {
+    rotate: 360deg;
+  }
+}
+
+@keyframes flashing-red {
+  from {
+    background: red;
+  }
+  to {
+    background: black;
+  }
+}
