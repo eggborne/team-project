@@ -255,7 +255,7 @@ export default class Game {
     newWordShip.element.style.left = newShipPosition.x;
     newWordShip.element.style.top = newShipPosition.y;
     newWordShip.element.style.setProperty('--descend-speed', this.levelData[this.level].shipSpeed + 'ms');
-    this.levelData[this.level].wordShipLaunchAction();
+    this.levelData[this.level].wordShipLaunchAction(newWordShip);
     this.activeWordShips.push(newWordShip);
     if (this.dictionaryEmpty()) {
       newWordShip.lastInWave = true;
