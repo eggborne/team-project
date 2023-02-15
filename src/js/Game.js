@@ -55,7 +55,7 @@ export default class Game {
     });
 
     document.getElementById('next-level-button').addEventListener('click', async () => {
-      let nextLevel = this.level + 1 < this.levelData.length ? this.level + 1 : 1;
+      let nextLevel = (this.level + 1) < this.levels.length ? this.level + 1 : 1;
       await this.startNewLevel(nextLevel);
     });
 
