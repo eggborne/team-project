@@ -5,6 +5,7 @@ import { pause, randomInt } from './util.js';
 import DolphinLevel from './DolphinLevel.js';
 import Level2 from './Level2.js';
 import QuickDrawLevel from './QuickDrawLevel.js';
+import HorizontalLevel from './HorizontalLevel.js';
 import TurretLevel from './TurretLevel.js';
 
 export default class Game {
@@ -14,7 +15,7 @@ export default class Game {
     this.score = 0;
     this.destroyedThisWave = 0;
     this.health = 100;
-    this.level = 2;
+    this.level = 1;
     this.dictionary = {};
     this.activeWordShips = [];
     this.targetedWordShips = [];
@@ -27,6 +28,7 @@ export default class Game {
       () => new DolphinLevel('dolphin-level'),
       () => new Level2('level2'),
       () => new QuickDrawLevel('quick-draw-level'),
+      () => new HorizontalLevel('horizontal-level'),
       () => new TurretLevel('turret-level'),
     ];
     this.levelData = [];
@@ -40,12 +42,18 @@ export default class Game {
       document.getElementById('score-display').innerHTML = `Score: <p>${this.score}</p>`;
       document.getElementById('score-display').classList.remove('hidden');
       document.getElementById('level-display').classList.remove('hidden');
+      document.getElementById('player-input').addEventListener('blur', e => {
+        e.target.focus();
+      });
+      document.getElementById('player-input').focus();
       await this.loadLevel(this.level);
+      document.getElementById('player-input').value = '';
       this.startLevelSequence();
     });
 
     document.getElementById('next-level-button').addEventListener('click', async () => {
-      await this.startNewLevel(this.level + 1);
+      let nextLevel = this.level + 1 < this.levelData.length ? this.level + 1 : 1;
+      await this.startNewLevel(nextLevel);
     });
 
     document.getElementById('restart-button').addEventListener('click', async () => {
@@ -53,58 +61,78 @@ export default class Game {
       await this.startNewLevel(1);
     });
 
-    document.addEventListener('keydown', async (e) => {
-      if ('abcdefghijklmnopqrstuvwxyz'.includes(e.key) && this.activeWordShips.length) {
-        this.playerInput += e.key;
+    document.body.addEventListener('keydown', e => {
+      console.log('space', this.activeWordShips);
+      if (!this.activeWordShips.length && (e.code === 'Space' || e.key === ' ')) {
+        if (!document.getElementById('start-button').classList.contains('hidden')) {
+          document.getElementById('start-button').click();
+        } else if (!document.getElementById('level-clear-modal').classList.contains('hidden')) {
+          document.getElementById('next-level-button').click();
+        }
+      }
+    });
 
+    document.getElementById('player-input').addEventListener('input', async e => {
+      if (this.activeWordShips.length) {
         if (this.targetedWordShips.length === 0) {
           for (const ship of this.activeWordShips) {
-            let matches = this.matchesSoFar(ship.word);
+            let matches = this.inputMatchesSoFar(ship.word);
             if (matches) {
               this.targetedWordShips.push(ship);
               ship.element.classList.add('targeted');
-              ship.focusLayer.innerText = this.playerInput;
+              ship.focusLayer.innerText = this.playerInputValue;
               this.levelData[this.level].firstFocusAction(ship);
             }
           }
-        } else { // one or more is targeted
+        } else {  // one or more is already targeted
           for (const ship of this.targetedWordShips) {
-            let matches = this.matchesSoFar(ship.word);
+            let matches = this.inputMatchesSoFar(ship.word);
             if (matches) {
-              ship.focusLayer.innerText = this.playerInput;
-              document.getElementById('input-display').innerText = this.playerInput;
-              this.levelData[this.level].maintainFocusAction(ship);
-              if (this.playerInput.length === ship.word.length) {
-                document.getElementById('input-display').classList.add('correct');
+              // continue targeting it or destroy if fully matched
+              ship.focusLayer.innerText = this.playerInputValue;
+              if (this.playerInputValue.length === ship.word.length) {
                 this.deleteShip(ship);
-                await this.levelData[this.level].destroyShipAction(ship); 
-                if (ship.lastInWave && this.dictionaryEmpty()) {
-                  this.displayLevelClearModal();
-                } else {
-                  //
-                }
+                this.levelData[this.level].destroyShipAction(ship);
+              } else {
+                this.levelData[this.level].maintainFocusAction(ship);
               }
-            } else { // made a typo
+            } else {
+              // un-target it
               this.targetedWordShips.splice(this.targetedWordShips.indexOf(ship), 1);
               ship.element.classList.remove('targeted');
               this.levelData[this.level].loseFocusAction(ship);
             }
           }
         }
-
         if (this.targetedWordShips.length === 0) {
-          this.playerInput = '';
-          document.getElementById('main-turret').classList.remove('aiming');
-        }
-        document.getElementById('input-display').innerText = this.playerInput;
-      } else if (e.code === 'Space' || e.key === ' ') {
-        if (!document.getElementById('start-button').classList.contains('hidden')) {
-          document.getElementById('start-button').click();
-        } else if (!document.getElementById('next-level-button').classList.contains('hidden')) {
-          document.getElementById('next-level-button').click();
+          if (this.playerInputValue) {
+            this.levelData[this.level].loseAllTargetsAction();
+            document.getElementById('player-input').value = '';
+          }
         }
       }
     });
+  }
+
+  inputMatchesSoFar(target) {
+    let input = this.playerInputValue;
+    let matches = target.substring(0, input.length) === input;
+    return matches;
+  }
+
+  get playerInputValue() {
+    return document.getElementById('player-input').value;
+  }
+
+  startLevelSequence() {
+    this.launchWordShip();
+    this.interval = setInterval(() => {
+      if (!this.dictionaryEmpty()) {
+        this.launchWordShip();
+      } else {
+        clearInterval(this.interval);
+      }
+    }, this.levelData[this.level].launchFrequency);
   }
 
   async loadLevel(level) {
@@ -114,19 +142,24 @@ export default class Game {
     if (!this.levelData[level].detonateShipAction) {
       this.levelData[level].detonateShipAction = () => { null; };
     }
+    if (!this.levelData[level].loseAllTargetsAction) {
+      this.levelData[level].loseAllTargetsAction = () => { null; };
+    }
     let possibleWordLengths = this.levelData[level].wordLengths;
     let wordPoolSize = 200;
+    let finalAmount = this.levelData[level].wordsPerLengthInWave;
     for (let i = 0; i < possibleWordLengths.length; i++) {
-      await this.fillDictionary(possibleWordLengths[i], wordPoolSize);
+      await this.fillDictionary(possibleWordLengths[i], wordPoolSize, finalAmount);
     }
   }
 
-  async fillDictionary(wordLength, max) {
+  async fillDictionary(wordLength, max, finalAmount) {
     let response = await this.wordApi.getWords(wordLength, max);
-    this.addUnusedWordsToDictionary(response, wordLength);
+    response.length = max;
+    this.addUnusedWordsToDictionary(response, wordLength, finalAmount);
   }
 
-  addUnusedWordsToDictionary(response, wordLength) {
+  addUnusedWordsToDictionary(response, wordLength, finalAmount) {
     let finalWordsArray = response.filter(word => {
       let alpha = true;
       let used = this.usedWords.includes(word);
@@ -137,6 +170,7 @@ export default class Game {
       }
       return !used && alpha;
     });
+    finalWordsArray.length = finalAmount;
     this.dictionary[wordLength] = finalWordsArray;
     this.usedWords.push(...finalWordsArray);
   }
@@ -153,31 +187,22 @@ export default class Game {
     document.getElementById('health-bar').style.scale = 1;
   }
 
-  startLevelSequence() {
-    this.launchWordShip();
-    this.interval = setInterval(() => {
-      if (!this.dictionaryEmpty()) {
-        this.launchWordShip();
-      } else {
-        clearInterval(this.interval);
-      }
-    }, this.levelData[this.level].launchFrequency);
-  }
-
   getPercentageDone() {
     let totalWordsInRound = this.levelData[this.level].wordsPerLengthInWave * this.levelData[this.level].wordLengths.length;
     let totalWordsLeft = 0;
     for (const wordLength in this.dictionary) {
       totalWordsLeft += this.dictionary[wordLength].length;
     }
+    console.log('adding active:', this.activeWordShips.length, ' to totalWordsLeft:', totalWordsLeft);
+    totalWordsLeft += this.activeWordShips.length;
+    console.log('totalWordsLeft: ' + totalWordsLeft);
+    console.log('totalWordsInRound: ' + totalWordsInRound);
     return Math.floor(100 - ((totalWordsLeft / totalWordsInRound) * 100));
   }
 
   deleteShip(ship) {
     this.targetedWordShips.splice(this.targetedWordShips.indexOf(ship), 1);
     this.activeWordShips.splice(this.activeWordShips.indexOf(ship), 1);
-    document.getElementById('input-display').innerText = this.playerInput;
-    document.getElementById('input-display').classList.add('correct');
   }
 
   async destroyShip(ship, creditPlayer) {
@@ -186,12 +211,19 @@ export default class Game {
       this.score += ship.word.length * this.level;
       document.getElementById('score-display').innerHTML = `Score: <p>${this.score}</p>`;
       ship.element.classList.add('defeated');
+      if (!this.activeWordShips.length && this.dictionaryEmpty()) {
+        pause(1000).then(() => {
+          this.displayLevelClearModal();
+        });
+      }
     } else {
       ship.element.classList.add('detonated');
+      if (this.targetedWordShips.length === 0) {
+        document.getElementById('player-input').value = '';
+      }
     }
     await pause(300);
     ship.element.parentElement.removeChild(ship.element);
-    document.getElementById('input-display').classList.remove('correct');
     document.getElementById('level-display').innerHTML = `Level ${this.level} <p>${this.getPercentageDone()}%</p>`;
   }
 
@@ -203,15 +235,6 @@ export default class Game {
       }
     }
     return empty;
-  }
-
-  matchesSoFar(targetWord) {
-    let playLen = this.playerInput.length;
-    if (this.playerInput[playLen - 1] === targetWord[playLen - 1]) {
-      return true;
-    } else {
-      return false;
-    }
   }
 
   launchWordShip() {
@@ -232,8 +255,8 @@ export default class Game {
       this.levelData[this.level].detonateShipAction(newWordShip);
       this.deleteShip(newWordShip);
       this.destroyShip(newWordShip);
-      if (this.health - (newWordShip.word.length * 10) > 0) {
-        this.health -= newWordShip.word.length * 2;
+      if (this.health - (newWordShip.word.length * 1) > 0) {
+        this.health -= newWordShip.word.length * 1;
         document.getElementById('health-bar').style.scale = `${this.health}% 1`;
       } else {
         document.getElementById('health-bar').style.scale = `0 1`;
