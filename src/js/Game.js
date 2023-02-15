@@ -153,6 +153,9 @@ export default class Game {
     if (!this.levelData[level].loseAllTargetsAction) {
       this.levelData[level].loseAllTargetsAction = () => { null; };
     }
+    if (!this.levelData[level].wordShipLaunchAction) {
+      this.levelData[level].wordShipLaunchAction = () => { null; };
+    }
     let possibleWordLengths = this.levelData[level].wordLengths;
     let wordPoolSize = 200;
     let finalAmount = this.levelData[level].wordsPerLengthInWave;
@@ -252,6 +255,7 @@ export default class Game {
     newWordShip.element.style.left = newShipPosition.x;
     newWordShip.element.style.top = newShipPosition.y;
     newWordShip.element.style.setProperty('--descend-speed', this.levelData[this.level].shipSpeed + 'ms');
+    this.levelData[this.level].wordShipLaunchAction();
     this.activeWordShips.push(newWordShip);
     if (this.dictionaryEmpty()) {
       newWordShip.lastInWave = true;
