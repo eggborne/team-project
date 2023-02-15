@@ -1,8 +1,10 @@
 import '../css/style.css';
 import WordAPI from './WordApi';
 import WordShip from './WordShip';
-import { pause, randomInt, angleOfPointABFromXY, radToDeg } from './util.js';
-import SimplestLevel from './SimplestLevel.js';
+import { pause, randomInt } from './util.js';
+import DolphinLevel from './DolphinLevel.js';
+import Level2 from './Level2.js';
+import QuickDrawLevel from './QuickDrawLevel.js';
 import TurretLevel from './TurretLevel.js';
 
 export default class Game {
@@ -22,7 +24,9 @@ export default class Game {
 
     this.levels = [
       undefined,
-      () => new SimplestLevel('simplest-level'),
+      () => new DolphinLevel('dolphin-level'),
+      () => new Level2('level2'),
+      () => new QuickDrawLevel('quick-draw-level'),
       () => new TurretLevel('turret-level'),
     ];
     this.levelData = [];
@@ -107,6 +111,9 @@ export default class Game {
     let newLevelData = this.levels[level]();
     newLevelData.game = this;
     this.levelData[level] = newLevelData;
+    if (!this.levelData[level].detonateShipAction) {
+      this.levelData[level].detonateShipAction = () => { null; };
+    }
     let possibleWordLengths = this.levelData[level].wordLengths;
     let wordPoolSize = 200;
     for (let i = 0; i < possibleWordLengths.length; i++) {
@@ -185,7 +192,7 @@ export default class Game {
     await pause(300);
     ship.element.parentElement.removeChild(ship.element);
     document.getElementById('input-display').classList.remove('correct');
-    // document.getElementById('level-display').innerHTML = `Level ${this.level} <p>${this.getPercentageDone()}%</p>`;
+    document.getElementById('level-display').innerHTML = `Level ${this.level} <p>${this.getPercentageDone()}%</p>`;
   }
 
   dictionaryEmpty() {
@@ -222,6 +229,7 @@ export default class Game {
       newWordShip.element.classList.remove('obscured');
     }, 10);
     newWordShip.element.addEventListener('animationend', (e) => {
+      this.levelData[this.level].detonateShipAction(newWordShip);
       this.deleteShip(newWordShip);
       this.destroyShip(newWordShip);
       if (this.health - (newWordShip.word.length * 10) > 0) {

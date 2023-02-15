@@ -1,9 +1,11 @@
 body.dolphin-level main {
+  --bg-width: calc(100% * (896/546));
   background-color: black;
   image-rendering: pixelated;
-  background-image: url("../media/dolphinbg.png");
-  background-repeat: no-repeat;
-  background-size: cover;
+  background-image: url("../media/dolphinbg2.png");
+  background-repeat: repeat-x;
+  background-size: 100% 100%;
+  animation: scroll-bg 1000ms linear infinite forwards;
 }
 
 body.dolphin-level .word-ship {
@@ -20,7 +22,6 @@ body.dolphin-level .word-ship {
   padding: 0;
   padding-left: 6rem;
   color: white !important;
-  transition: 
 }
 
 body.dolphin-level .word-ship.descending {
@@ -40,7 +41,7 @@ body.dolphin-level .word-ship.detonated {
   transition: scale 150ms ease, 
     opacity 150ms ease,
     filter 150ms ease;
-  scale: 1.5;
+  scale: 1.25;
   opacity: 0;
   filter: blur(2rem);
 }
@@ -63,5 +64,13 @@ body.dolphin-level .word-ship.targeted {
   }
   to {
     margin-top: 2rem;
+  }
+}
+@keyframes scroll-bg {
+  from {
+    background-position-x: 0;
+  }
+  to {
+    background-position-x: -100vw;
   }
 }
