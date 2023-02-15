@@ -1,4 +1,5 @@
 import '../css/ShrinkingLevel.css';
+import { pause } from '../js/util.js';
 
 export default class ShrinkingLevel {
   constructor(className) {
@@ -7,6 +8,9 @@ export default class ShrinkingLevel {
     this.wordLengths = [5,6];
     this.shipSpeed = 3000;
     this.launchFrequency = 2500;
+    this.scoreDisplay = document.createElement('div');
+    this.scoreDisplay.classList.add('score-display');
+    document.querySelector('main').append(this.scoreDisplay);
   }
 
   firstFocusAction(ship) {
@@ -19,6 +23,15 @@ export default class ShrinkingLevel {
 
   destroyShipAction(ship) {
     this.game.destroyShip(ship, true);
+    this.scoreDisplay.style.display = 'block';
+    pause(10).then(() => {
+      this.scoreDisplay.innerText = `+${ship.word.length * this.game.level}`;
+      this.scoreDisplay.classList.add('showing');
+      setTimeout(() => {        
+        this.scoreDisplay.style.display = 'none';
+        this.scoreDisplay.classList.remove('showing');
+      }, 1400);
+    });
   }
 
   detonateShipAction(ship) {

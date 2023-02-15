@@ -24,6 +24,24 @@ body.shrinking-level .word-ship {
   background-color: transparent;
 }
 
+body.shrinking-level .score-display {
+  font-size: 2.5rem;
+  top: 30%;
+  left: 50%;
+  position: absolute;
+  translate: -50% -50%;
+  transition: translate 800ms ease;
+  display: none;
+}
+
+body.shrinking-level .score-display.showing {
+  translate: -50% -250%;
+  opacity: 0;
+  transition: translate 800ms ease, opacity 1400ms ease;
+}
+
+
+
 body.shrinking-level .word-ship.descending {
   animation: shrink var(--descend-speed) linear forwards;
 }
