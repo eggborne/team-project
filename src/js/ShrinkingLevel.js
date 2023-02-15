@@ -5,7 +5,7 @@ export default class ShrinkingLevel {
     document.body.classList = [className];
     this.wordsPerLengthInWave = 5;
     this.wordLengths = [5,6];
-    this.shipSpeed = 2000;
+    this.shipSpeed = 3000;
     this.launchFrequency = 2500;
   }
 
@@ -17,7 +17,7 @@ export default class ShrinkingLevel {
     //
   }
 
-  async destroyShipAction(ship) {
+  destroyShipAction(ship) {
     this.game.destroyShip(ship, true);
   }
 
