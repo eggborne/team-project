@@ -14,7 +14,13 @@ export default class TurretLevel {
     this.shipSpeed = 5000;
     this.launchFrequency = 2000;
 
-    document.getElementById('main-turret').style.display = 'flex';
+    this.turretElement = document.createElement('div');
+    this.turretElement.classList.add('turret');
+    this.turretElement.id = 'main-turret';
+    this.turretElement.innerHTML = `
+      <div class="turret-barrel"></div>   
+    `;
+    document.querySelector('main').prepend(this.turretElement);
   }
 
   firstFocusAction(ship) {
@@ -38,6 +44,10 @@ export default class TurretLevel {
     ship.focusLayer.classList.add('doomed');
     this.aimTurret(undefined, 0);
     ship.focusLayer.classList.remove('doomed');
+  }
+
+  loseAllTargetsAction(ship) {
+    document.getElementById('main-turret').classList.remove('aiming');
   }
 
   placeWordShip() {
