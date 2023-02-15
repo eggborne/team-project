@@ -6,8 +6,8 @@ export default class DolphinLevel {
     document.body.classList = [className];
     this.wordsPerLengthInWave = 6;
     this.wordLengths = [5,6,7];
-    this.shipSpeed = 5000;
-    this.launchFrequency = 1000;
+    this.shipSpeed = 6800;
+    this.launchFrequency = 1200;
   }
 
   firstFocusAction(ship) {
