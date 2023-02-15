@@ -14,7 +14,7 @@ export default class DolphinLevel {
     ship.alienElement = document.createElement('div');
     ship.alienElement.classList.add('alien');
     ship.alienElement.style.top = ship.element.style.top;
-    ship.alienElement.style.right = (randomInt(0, 30) * 0.1) + 'rem';
+    ship.alienElement.style.right = (randomInt(0, 30) * 0.15) + 'rem';
     document.querySelector('main').append(ship.alienElement);
     setTimeout(() => {
       ship.alienElement.classList.add('showing');

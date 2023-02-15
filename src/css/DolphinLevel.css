@@ -22,6 +22,8 @@ body.dolphin-level .word-ship {
   padding: 0;
   padding-left: 6rem;
   color: white !important;
+  transform-origin: center;
+  scale: 0.8;
 }
 
 body.dolphin-level .alien {
@@ -54,14 +56,18 @@ body.dolphin-level .word-ship::after {
   right: 0;
   opacity: 0;
   transform: translateX(0);
-  transition: transform 600ms linear;
 }
+
 body.dolphin-level .word-ship.firing::after {
+  transition: transform 600ms linear;
   opacity: 1;
   background-image: url("../media/dolphin/sonar.gif");
   transform: translateX(100vw);
 }
 
+body.dolphin-level .word-ship.defeated::after { 
+  opacity: 0;
+}
 
 body.dolphin-level .word-ship.descending {
   animation: swim-to-right var(--descend-speed) linear forwards,
@@ -86,6 +92,7 @@ body.dolphin-level .word-ship.detonated {
 
 body.dolphin-level .word-ship.targeted {
   color: white;
+  scale: 1;
 }
 
 @keyframes swim-to-right {
