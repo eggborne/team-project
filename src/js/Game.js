@@ -3,12 +3,12 @@ import WordAPI from './WordApi';
 import WordShip from './WordShip';
 import { pause, randomInt } from './util.js';
 
-import DolphinLevel from './DolphinLevel.js';
-import ShrinkingLevel from './ShrinkingLevel.js';
+import GraphLevel from './GraphLevel';
 import Level2 from './Level2.js';
+import ShrinkingLevel from './ShrinkingLevel.js';
 import QuickDrawLevel from './QuickDrawLevel.js';
+import DolphinLevel from './DolphinLevel.js';
 import TurretLevel from './TurretLevel.js';
-import HorizontalLevel from './HorizontalLevel.js';
 
 export default class Game {
   constructor(levelObject) {
@@ -17,7 +17,7 @@ export default class Game {
     this.score = 0;
     this.destroyedThisWave = 0;
     this.health = 100;
-    this.level = 4;
+    this.level = 1;
     this.dictionary = {};
     this.activeWordShips = [];
     this.targetedWordShips = [];
@@ -27,12 +27,12 @@ export default class Game {
 
     this.levels = [
       undefined,
-      () => new ShrinkingLevel('shrinking-level'),
+      () => new GraphLevel('graph-level'),
       () => new Level2('level2'),
+      () => new ShrinkingLevel('shrinking-level'),
       () => new QuickDrawLevel('quick-draw-level'),
       () => new DolphinLevel('dolphin-level'),
       () => new TurretLevel('turret-level'),
-      () => new HorizontalLevel('horizontal-level'),
     ];
     this.levelData = [];
 
@@ -174,12 +174,13 @@ export default class Game {
     let finalWordsArray = response.filter(word => {
       let alpha = true;
       let used = this.usedWords.includes(word);
+      let profane = word === 'bitch';
       for (const letter of word) {
         if (!'abcdefghijklmnopqrstuvwxyz'.includes(letter)) {
           alpha = false;
         }
       }
-      return !used && alpha;
+      return !used && alpha && !profane;
     });
     finalWordsArray.length = finalAmount;
     this.dictionary[wordLength] = finalWordsArray;

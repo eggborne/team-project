@@ -1,0 +1,58 @@
+body.graph-level main {
+  background-color: rgb(18, 50, 18);
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: flex-start;
+  gap: 1rem;
+}
+
+body.graph-level .word-ship {
+  position: relative;
+  min-height: 1rem !important;
+  width: 100%;
+  background-color: rgb(51, 9, 43);
+  padding: 0.75rem;
+  text-shadow: 0 0 2px black !important;
+}
+
+body.graph-level .word-ship.descending {
+  animation: shrink-x var(--descend-speed) ease-in forwards;
+}
+
+body.graph-level .word-ship.defeated {
+  scale: 0;
+  opacity: 0;
+}
+
+body.graph-level .word-ship.detonated {
+  transition: scale 150ms ease, 
+    opacity 150ms ease,
+    background-color 150ms ease;
+  scale: 1.5;
+  opacity: 0;
+  background-color: orange;
+}
+
+body.graph-level .word-ship.targeted {
+  color: white;
+  outline: 2px solid green;
+}
+
+body.graph-level #player-input-area {
+  align-self: center;
+}
+
+@keyframes shrink-x {
+  from {
+    width: 100%;
+    background-color: green;
+  }
+  50% {
+    background-color: yellow;
+  }
+  to {
+    width: 8rem;
+    background-color: red;
+  }
+}
