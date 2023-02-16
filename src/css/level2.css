@@ -2,8 +2,8 @@ body.level2 main {
   background-color: transparent;
 }
 
-body.level2 {
-  background: url(../css/streetfighter.png) no-repeat center center fixed;
+body {
+  background: url(../css/streetfighter.png) no-repeat center center fixed; 
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
