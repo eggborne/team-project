@@ -3,16 +3,12 @@ body.level2 main {
 }
 
 body.level2 {
-  background: url(../css/streetfighter.png) no-repeat center center fixed;
+  background: url(../css/streetfighter.png) no-repeat center center fixed; 
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
   color: white;
-
-
-
-
 }
 
 body.level2 .word-ship {
@@ -30,6 +26,28 @@ body.level2 .word-ship.descending {
 body.level2 .word-ship.defeated {
   scale: 3.5;
   opacity: 0;
+}
+
+body.level2 #flameEmoji01, body.level2 #flameEmoji02, body.level2 #flameEmoji03 {
+  display: none;
+  position:absolute;
+  font-size: 5rem;
+
+}
+
+#flameEmoji01 {
+  margin-right: 10rem;
+}
+#flameEmoji02 {
+  margin-left: 10rem;
+}
+#flameEmoji03 {
+  margin-top: 10rem;
+}
+
+body.level2 #flameEmoji01.showing, body.level2 #flameEmoji02.showing, body.level2 #flameEmoji03.showing {
+  display: block;
+  animation: rise 500ms ease;
 }
 
 body.level2 .word-ship.detonated {
@@ -56,4 +74,15 @@ body.level2 .word-ship.targeted {
     pointer-events: none;
   }
 }
+
+@keyframes rise {
+  from {
+    transform: none;
+  }
+
+  to {
+    transform: translateY(-8rem);
+  }
+}
+
 
