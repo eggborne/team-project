@@ -1,12 +1,12 @@
-import '../css/SimplestLevel.css';
+import '../css/GraphLevel.css';
 
-export default class SimplestLevel {
+export default class GraphLevel {
   constructor(className) {
     document.body.classList = [className];
-    this.wordsPerLengthInWave = 5;
-    this.wordLengths = [4,5];
-    this.shipSpeed = 2500;
-    this.launchFrequency = 3000;
+    this.wordsPerLengthInWave = 4;
+    this.wordLengths = [6,7];
+    this.shipSpeed = 10000;
+    this.launchFrequency = 500;
 
     // add new elements to the DOM here (e.g. gun turret)
 
@@ -62,8 +62,8 @@ export default class SimplestLevel {
 
   placeWordShip() {
     // overwritten by any values for ship.style.left or ship.style.top set in wordShipLaunchAction
-    let shipPositionX = '50%';
-    let shipPositionY = '50%';
+    let shipPositionX = '0';
+    let shipPositionY = '0';
     return {
       x: shipPositionX,
       y: shipPositionY,

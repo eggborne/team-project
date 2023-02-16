@@ -9,8 +9,8 @@ import {
 export default class TurretLevel {
   constructor(className) {
     document.body.classList = [className];
-    this.wordsPerLengthInWave = 5;
-    this.wordLengths = [5];
+    this.wordsPerLengthInWave = 6;
+    this.wordLengths = [4,5];
     this.shipSpeed = 5000;
     this.launchFrequency = 2000;
 
@@ -41,13 +41,14 @@ export default class TurretLevel {
   }
 
   loseFocusAction(ship) {
-    ship.focusLayer.classList.add('doomed');
     this.aimTurret(undefined, 0);
-    ship.focusLayer.classList.remove('doomed');
   }
 
-  loseAllTargetsAction(ship) {
-    document.getElementById('main-turret').classList.remove('aiming');
+  async loseAllTargetsAction(ship) {
+    await pause(600);
+    if (this.game.targetedWordShips.length === 0) {
+      document.getElementById('main-turret').classList.remove('aiming');
+    }
   }
 
   placeWordShip() {
@@ -57,6 +58,12 @@ export default class TurretLevel {
       x: shipPositionX,
       y: shipPositionY,
     };
+  }
+
+  wordShipLaunchAction(ship) {
+    let wickElement = document.createElement('div');
+    wickElement.classList.add('wick');
+    ship.element.prepend(wickElement);
   }
 
   aimTurret(targetShip, forceAngle) {
@@ -74,7 +81,6 @@ export default class TurretLevel {
         x: targetElement.offsetLeft + (targetShip.width / 2),
         y: targetElement.offsetTop,
       };
-      console.log('aiming from', turretPosition, 'to', targetPosition);
       newAngle = radToDeg(angleOfPointABFromXY(
         targetPosition.x,
         targetPosition.y,

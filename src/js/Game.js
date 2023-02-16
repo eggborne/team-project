@@ -2,13 +2,13 @@ import '../css/style.css';
 import WordAPI from './WordApi';
 import WordShip from './WordShip';
 import { pause, randomInt } from './util.js';
+
 import DolphinLevel from './DolphinLevel.js';
 import ShrinkingLevel from './ShrinkingLevel.js';
-import Level2 from './Level2.js';
 import QuickDrawLevel from './QuickDrawLevel.js';
+import DolphinLevel from './DolphinLevel.js';
 import TurretLevel from './TurretLevel.js';
 import HorizontalLevel from './HorizontalLevel.js';
-import SpaceLevel from './SpaceLevel';
 
 export default class Game {
   constructor(levelObject) {
@@ -17,7 +17,7 @@ export default class Game {
     this.score = 0;
     this.destroyedThisWave = 0;
     this.health = 100;
-    this.level = 7;
+    this.level = 4;
     this.dictionary = {};
     this.activeWordShips = [];
     this.targetedWordShips = [];
@@ -27,14 +27,13 @@ export default class Game {
 
     this.levels = [
       undefined,
-      () => new ShrinkingLevel('shrinking-level'),
+      () => new GraphLevel('graph-level'),
       () => new Level2('level2'),
+      () => new ShrinkingLevel('shrinking-level'),
       () => new QuickDrawLevel('quick-draw-level'),
       () => new DolphinLevel('dolphin-level'),
       () => new TurretLevel('turret-level'),
       () => new HorizontalLevel('horizontal-level'),
-      () => new SpaceLevel('space-level'),
-
     ];
     this.levelData = [];
 
@@ -68,7 +67,6 @@ export default class Game {
     });
 
     document.body.addEventListener('keydown', e => {
-      console.log('space', this.activeWordShips);
       if (!this.activeWordShips.length && (e.code === 'Space' || e.key === ' ')) {
         e.preventDefault();
         if (!document.getElementById('start-button').classList.contains('hidden')) {
@@ -155,17 +153,18 @@ export default class Game {
     if (!this.levelData[level].loseAllTargetsAction) {
       this.levelData[level].loseAllTargetsAction = () => { null; };
     }
+    if (!this.levelData[level].wordShipLaunchAction) {
+      this.levelData[level].wordShipLaunchAction = () => { null; };
+    }
     let possibleWordLengths = this.levelData[level].wordLengths;
-    let wordPoolSize = 200;
     let finalAmount = this.levelData[level].wordsPerLengthInWave;
     for (let i = 0; i < possibleWordLengths.length; i++) {
-      await this.fillDictionary(possibleWordLengths[i], wordPoolSize, finalAmount);
+      await this.fillDictionary(possibleWordLengths[i], finalAmount);
     }
   }
 
-  async fillDictionary(wordLength, max, finalAmount) {
-    let response = await this.wordApi.getWords(wordLength, max);
-    response.length = max;
+  async fillDictionary(wordLength, finalAmount) {
+    let response = await this.wordApi.getWords(wordLength, finalAmount);
     this.addUnusedWordsToDictionary(response, wordLength, finalAmount);
   }
 
@@ -173,14 +172,21 @@ export default class Game {
     let finalWordsArray = response.filter(word => {
       let alpha = true;
       let used = this.usedWords.includes(word);
+      let profane = word === 'bastard' || word === 'bitch' || word === 'orgasm';
       for (const letter of word) {
         if (!'abcdefghijklmnopqrstuvwxyz'.includes(letter)) {
           alpha = false;
         }
       }
-      return !used && alpha;
+      return !used && alpha && !profane;
     });
-    finalWordsArray.length = finalAmount;
+    if (finalWordsArray.length >= finalAmount) {
+      console.log('reducing pool array', [...finalWordsArray]);
+      finalWordsArray = finalWordsArray.sort(() => .5 - Math.random()).slice(0, finalAmount);
+      console.log('now is', finalWordsArray);
+    } else {
+      console.log('finalWordsArray not long enough!', finalWordsArray);
+    }
     this.dictionary[wordLength] = finalWordsArray;
     this.usedWords.push(...finalWordsArray);
   }
@@ -203,10 +209,7 @@ export default class Game {
     for (const wordLength in this.dictionary) {
       totalWordsLeft += this.dictionary[wordLength].length;
     }
-    console.log('adding active:', this.activeWordShips.length, ' to totalWordsLeft:', totalWordsLeft);
     totalWordsLeft += this.activeWordShips.length;
-    console.log('totalWordsLeft: ' + totalWordsLeft);
-    console.log('totalWordsInRound: ' + totalWordsInRound);
     return Math.floor(100 - ((totalWordsLeft / totalWordsInRound) * 100));
   }
 
@@ -254,6 +257,7 @@ export default class Game {
     newWordShip.element.style.left = newShipPosition.x;
     newWordShip.element.style.top = newShipPosition.y;
     newWordShip.element.style.setProperty('--descend-speed', this.levelData[this.level].shipSpeed + 'ms');
+    this.levelData[this.level].wordShipLaunchAction(newWordShip);
     this.activeWordShips.push(newWordShip);
     if (this.dictionaryEmpty()) {
       newWordShip.lastInWave = true;
@@ -275,7 +279,7 @@ export default class Game {
         this.displayGameOverModal();
       }
       if (newWordShip.lastInWave) {
-        pause(1200).then(() => {
+        pause(1000).then(() => {
           this.displayLevelClearModal();
         });
       }
@@ -292,7 +296,6 @@ export default class Game {
     let possibleLengths = [...this.levelData[this.level].wordLengths];
     for (const wordLengthIndex in possibleLengths) {
       if (this.dictionary[possibleLengths[wordLengthIndex]].length === 0) {
-        console.log('removing length', possibleLengths[wordLengthIndex], 'from random choices because empty');
         possibleLengths.splice(wordLengthIndex, 1);
       }
     }

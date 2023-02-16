@@ -1,5 +1,5 @@
 body.turret-level main {
-  background-color: rgb(170, 139, 170);
+  background-color: rgb(37, 26, 37);
 }
 
 body.turret-level .word-ship {
@@ -15,8 +15,43 @@ body.turret-level .word-ship {
   border-radius: 50%;
 }
 
+body.turret-level .word-ship > .wick {
+  line-height: 0;
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 22%;
+  height: 12%;
+  translate: -50% -2rem;
+  background-color: orange;
+  transform-origin: center;
+  display: flex;
+  outline: 2px solid green;
+  align-items: center;
+  justify-content: center;
+}
+
+body.turret-level .word-ship::after {
+  content: '';
+  position: absolute;
+  width: 35%;
+  height: 25%;
+  top: 0;
+  left: 50%;
+  translate: -50% -25%;
+  background-image: linear-gradient(90deg, rgb(0, 0, 0), rgb(94, 43, 43), rgb(0, 0, 0));
+}
+
 body.turret-level .word-ship.descending {
   animation: descend var(--descend-speed) ease-in forwards;
+}
+
+body.turret-level .word-ship.descending > .wick {
+  animation: burn 5000ms linear forwards;
+}
+
+body.turret-level .word-ship::before {
+  translate: -50% 0;
 }
 
 body.turret-level .word-ship.defeated {
@@ -53,8 +88,6 @@ body.turret-level #main-turret {
   bottom: 0;
   left: 50%;
   translate: -50% 0;
-  /* background-color: rgb(115, 111, 102);
-  background-image: radial-gradient(rgb(115, 111, 102), rgb(54, 54, 54)); */
   width: calc(var(--header-height) * 2);
   height: calc(var(--header-height) * 2);
   /* border-radius: 50%; */
@@ -103,5 +136,15 @@ body.turret-level #main-turret {
   }
   to {
     top: calc(var(--actual-height) - (var(--header-height) * 2));
+  }
+}
+@keyframes burn {
+  from {
+    top: -10%;
+    rotate: 0;
+  }
+  to {
+    top: 15%;
+    rotate: 8000deg;
   }
 }
