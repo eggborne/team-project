@@ -1,4 +1,4 @@
-import '../css/Level2.css';
+import '../css/StreetLevel2.css';
 
 export default class Level2 {
   constructor(className) {
@@ -19,8 +19,16 @@ export default class Level2 {
     this.flameEmoji3.id = 'flameEmoji03';
     this.flameEmoji3.innerHTML = '&#128293';
 
+    this.flameEmoji4 = document.createElement('div');
+    this.flameEmoji4.id = 'flameEmoji04';
+    this.flameEmoji4.innerHTML = '&#128293';
 
-    document.querySelector('main').append(this.flameEmoji1, this.flameEmoji2, this.flameEmoji3);
+    this.figher = document.createElement('div');
+    this.figher.id = 'fighter01';
+
+
+    document.querySelector('main').append(this.flameEmoji1, this.flameEmoji2,
+      this.flameEmoji3, this.flameEmoji4, this.figher);
 
   }
 
@@ -36,10 +44,12 @@ export default class Level2 {
     this.flameEmoji1.classList.add('showing');
     this.flameEmoji2.classList.add('showing');
     this.flameEmoji3.classList.add('showing');
+    this.flameEmoji4.classList.add('showing');
     setTimeout(() => {
       this.flameEmoji1.classList.remove('showing');
       this.flameEmoji2.classList.remove('showing');
       this.flameEmoji3.classList.remove('showing');
+      this.flameEmoji4.classList.remove('showing');
     }, 500);
     this.game.destroyShip(ship, true);
   }
