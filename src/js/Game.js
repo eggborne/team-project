@@ -2,13 +2,13 @@ import '../css/style.css';
 import WordAPI from './WordApi';
 import WordShip from './WordShip';
 import { pause, randomInt } from './util.js';
-
 import DolphinLevel from './DolphinLevel.js';
 import ShrinkingLevel from './ShrinkingLevel.js';
 import Level2 from './Level2.js';
 import QuickDrawLevel from './QuickDrawLevel.js';
 import TurretLevel from './TurretLevel.js';
 import HorizontalLevel from './HorizontalLevel.js';
+import SpaceLevel from './SpaceLevel';
 
 export default class Game {
   constructor(levelObject) {
@@ -17,7 +17,7 @@ export default class Game {
     this.score = 0;
     this.destroyedThisWave = 0;
     this.health = 100;
-    this.level = 4;
+    this.level = 7;
     this.dictionary = {};
     this.activeWordShips = [];
     this.targetedWordShips = [];
@@ -33,6 +33,8 @@ export default class Game {
       () => new DolphinLevel('dolphin-level'),
       () => new TurretLevel('turret-level'),
       () => new HorizontalLevel('horizontal-level'),
+      () => new SpaceLevel('space-level'),
+
     ];
     this.levelData = [];
 

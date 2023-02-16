@@ -1,35 +1,35 @@
-body.level4 main {
+body.space-level main {
   background-color: black;
   background-image: url('https://images.unsplash.com/photo-1675093517721-61b46b82dffc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1950&q=80');
   background-size: cover;
 }
 
-body.level4 .word-ship {
+body.space-level .word-ship {
   background-image: url("../media/attack-plane-svgrepo-com.svg");
+  background-size: cover;
 }
 
-body.level4 .word-ship::before {
+body.space-level .word-ship::before {
   content: '';
   position: absolute;
   width: 30%;
-  height: 20%;
-  background-color: orange;
+  height: 30%;
+  background-color: rgb(250, 9, 0);
   border-radius: 50%;
   translate: -125% 0;
-  animation: spin 300ms linear infinite;
   z-index: 0;
 }
 
-body.level4 .word-ship.descending {
+body.space-level .word-ship.descending {
   animation: slide-to-right var(--descend-speed) linear forwards;
 }
 
-body.level4 .word-ship.defeated {
+body.space-level .word-ship.defeated {
   scale: 0;
   opacity: 0;
 }
 
-body.level4 .word-ship.detonated {
+body.space-level .word-ship.detonated {
   transition: scale 150ms ease, 
     opacity 150ms ease,
     background-color 150ms ease;
@@ -38,9 +38,24 @@ body.level4 .word-ship.detonated {
   background-color: orange;
 }
 
-body.level4 .word-ship.targeted {
-  color: white;
+body.space-level .word-ship.targeted {
+  color: rgb(219, 80, 80);
 }
+
+
+.ship {
+  position: absolute;
+  bottom: 50%;
+  left: unset;
+  right: 0;
+  background-image: url('../media/spaceship-svgrepo-com.svg');
+  background-size: cover;
+  width: calc(var(--header-height) * 2);
+  height: calc(var(--header-height) * 2);
+  display: flex;
+  z-index: 1;
+}
+
 
 @keyframes slide-to-right {
   from {
