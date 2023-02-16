@@ -3,12 +3,13 @@ import WordAPI from './WordApi';
 import WordShip from './WordShip';
 import { pause, randomInt } from './util.js';
 
-import GraphLevel from './GraphLevel';
+import GraphLevel from './GraphLevel.js';
 import Level2 from './Level2.js';
+import DolphinLevel from './DolphinLevel.js';
 import ShrinkingLevel from './ShrinkingLevel.js';
 import QuickDrawLevel from './QuickDrawLevel.js';
-import DolphinLevel from './DolphinLevel.js';
 import TurretLevel from './TurretLevel.js';
+import SpaceLevel from './SpaceLevel';
 
 export default class Game {
   constructor(levelObject) {
@@ -27,6 +28,7 @@ export default class Game {
 
     this.levels = [
       undefined,
+      () => new SpaceLevel('space-level'),
       () => new GraphLevel('graph-level'),
       () => new Level2('level2'),
       () => new ShrinkingLevel('shrinking-level'),
@@ -253,8 +255,10 @@ export default class Game {
     let newWord = this.selectRandomWord();
     let newWordShip = new WordShip(newWord);
     let newShipPosition = this.levelData[this.level].placeWordShip();
-    newWordShip.element.style.left = newShipPosition.x;
-    newWordShip.element.style.top = newShipPosition.y;
+    if (newShipPosition) {
+      newWordShip.element.style.left = newShipPosition.x;
+      newWordShip.element.style.top = newShipPosition.y;
+    }
     newWordShip.element.style.setProperty('--descend-speed', this.levelData[this.level].shipSpeed + 'ms');
     this.levelData[this.level].wordShipLaunchAction(newWordShip);
     this.activeWordShips.push(newWordShip);
@@ -303,12 +307,14 @@ export default class Game {
     let newWord = wordArray[randomInt(0, wordArray.length - 1)];
     this.dictionary[randomLength].splice(this.dictionary[randomLength].indexOf(newWord), 1);
     if (!newWord) {
+      newWord = "undefined";
       console.log('selected undefined newWord with args: possibleLengths, randomLength, wordArray', possibleLengths, randomLength, wordArray);
     }
     return newWord;
   }
 
   async startNewLevel(newLevel) {
+    document.getElementById("next-level-button").classList.add('hidden');
     [...document.getElementsByClassName('modal')].forEach(modal => modal.classList.remove('showing'));
     this.level = newLevel;
     document.getElementById('level-display').innerHTML = `Level ${this.level} <p>0%</p>`;
@@ -322,6 +328,7 @@ export default class Game {
     document.querySelector("#level-clear-modal > .modal-message").innerText = `Level ${this.level} cleared!`;
     let totalWordsInRound = this.levelData[this.level].wordsPerLengthInWave * this.levelData[this.level].wordLengths.length;
     document.querySelector("#level-clear-modal > .modal-details").innerText = `${this.destroyedThisWave}/${totalWordsInRound} words defeated`;
+    document.getElementById("next-level-button").classList.remove('hidden');
     document.getElementById("next-level-button").innerText = `Start Level ${this.level + 1}`;  // calls startNewLevel
   }
   displayGameOverModal() {
