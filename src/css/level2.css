@@ -2,19 +2,25 @@ body.level2 main {
   background-color: transparent;
 }
 
-body {
-  background: url(../css/streetfighter.png) no-repeat center center fixed; 
+body.level2 {
+  background: url(../css/streetfighter.png) no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
   color: white;
+
+
+
+
 }
 
 body.level2 .word-ship {
+ 
   translate: -50% -50% !important;
-  min-height: unset;
-  background-color: rgb(17, 55, 17);
+   min-height: unset;
+  background-color: rgb(232, 4, 4);
+
 }
 
 body.level2 .word-ship.descending {
@@ -22,7 +28,7 @@ body.level2 .word-ship.descending {
 }
 
 body.level2 .word-ship.defeated {
-  scale: 0;
+  scale: 3.5;
   opacity: 0;
 }
 
@@ -50,3 +56,4 @@ body.level2 .word-ship.targeted {
     pointer-events: none;
   }
 }
+
