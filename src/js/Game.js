@@ -17,7 +17,7 @@ export default class Game {
     this.score = 0;
     this.destroyedThisWave = 0;
     this.health = 100;
-    this.level = 1;
+    this.level = 5;
     this.dictionary = {};
     this.activeWordShips = [];
     this.targetedWordShips = [];
@@ -28,7 +28,7 @@ export default class Game {
     this.levels = [
       undefined,
       () => new GraphLevel('graph-level'),
-      () => new Level2('level2'),
+      // () => new Level2('level2'),
       () => new ShrinkingLevel('shrinking-level'),
       () => new QuickDrawLevel('quick-draw-level'),
       () => new DolphinLevel('dolphin-level'),
@@ -179,10 +179,13 @@ export default class Game {
       }
       return !used && alpha && !profane;
     });
-    finalWordsArray.length = finalAmount;
+    if (finalWordsArray.length >= finalAmount) {
+      finalWordsArray = finalWordsArray.sort(() => .5 - Math.random()).slice(0, finalAmount);
+    } else {
+      console.log('finalWordsArray not long enough!', finalWordsArray);
+    }
     this.dictionary[wordLength] = finalWordsArray;
     this.usedWords.push(...finalWordsArray);
-    console.log('dic', this.dictionary);
   }
 
   resetGame() {

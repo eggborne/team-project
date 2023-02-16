@@ -61,8 +61,6 @@ export default class WordAPI {
     if (result.length >= (max * 2)) {
       result = result.slice(0, Math.ceil(result.length / 2));
     }
-    // randomly select the original requested amount for output
-    result = result.sort(() => .5 - Math.random()).slice(0, max);
     result = result.map(item => item.word);
     return result;
   }
