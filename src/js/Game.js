@@ -17,7 +17,7 @@ export default class Game {
     this.score = 0;
     this.destroyedThisWave = 0;
     this.health = 100;
-    this.level = 5;
+    this.level = 1;
     this.dictionary = {};
     this.activeWordShips = [];
     this.targetedWordShips = [];
@@ -28,7 +28,7 @@ export default class Game {
     this.levels = [
       undefined,
       () => new GraphLevel('graph-level'),
-      // () => new Level2('level2'),
+      () => new Level2('level2'),
       () => new ShrinkingLevel('shrinking-level'),
       () => new QuickDrawLevel('quick-draw-level'),
       () => new DolphinLevel('dolphin-level'),
@@ -171,7 +171,7 @@ export default class Game {
     let finalWordsArray = response.filter(word => {
       let alpha = true;
       let used = this.usedWords.includes(word);
-      let profane = word === 'bitch';
+      let profane = word === 'bastard' || word === 'bitch' || word === 'orgasm';
       for (const letter of word) {
         if (!'abcdefghijklmnopqrstuvwxyz'.includes(letter)) {
           alpha = false;
@@ -180,7 +180,9 @@ export default class Game {
       return !used && alpha && !profane;
     });
     if (finalWordsArray.length >= finalAmount) {
+      console.log('reducing pool array', [...finalWordsArray]);
       finalWordsArray = finalWordsArray.sort(() => .5 - Math.random()).slice(0, finalAmount);
+      console.log('now is', finalWordsArray);
     } else {
       console.log('finalWordsArray not long enough!', finalWordsArray);
     }
@@ -276,7 +278,7 @@ export default class Game {
         this.displayGameOverModal();
       }
       if (newWordShip.lastInWave) {
-        pause(1200).then(() => {
+        pause(1000).then(() => {
           this.displayLevelClearModal();
         });
       }
