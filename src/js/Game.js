@@ -17,7 +17,7 @@ export default class Game {
     this.score = 0;
     this.destroyedThisWave = 0;
     this.health = 100;
-    this.level = 1;
+    this.level = 2;
     this.dictionary = {};
     this.activeWordShips = [];
     this.targetedWordShips = [];
