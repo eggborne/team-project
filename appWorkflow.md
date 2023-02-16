@@ -8,6 +8,7 @@ flowchart TB
   %%GAME OBJ%%
     Game((Game.js))
   
+
   subgraph OnClick
       direction TB
       g1(start button onclick) -->        
@@ -23,6 +24,11 @@ flowchart TB
       direction TB
       g11("RESET GAME()") -->        
       g12("START NEW Level(1)")
+  end
+  subgraph KeydownOnClick
+      direction TB
+      g21("if spacebar pushed and on start screen <br> OnClick()") -->        
+      g22("if next level screen <br> NEXT LEVEL ON CLICK()")
   end
   subgraph loadLevel
       direction TB
@@ -86,34 +92,42 @@ flowchart TB
       gh1("reset all class properties <br> and healthbar")
   end
 
+
+  %% WORDSHIP %%
   subgraph WORDSHIP
     direction TB
     ws1("create the word ship <br> by inserting random word into div")
   end
   
+  
+  %% LEVEL %%
   subgraph Level
     direction TB
     level1("placeWordShip()")
   end
   
-    subgraph getWords
-      w1("fetchAPI for word length N") -->
-      w2("filterWordList()")
-    end
-    
-    subgraph filterWordList
-      wa1("get random selection of<br>the most common words returned")
-    end
+
+  %% WordAPI
+  subgraph getWords
+    w1("fetchAPI for word length N") -->
+    w2("filterWordList()")
+  end
+  subgraph filterWordList
+    wa1("get random selection of<br>the most common words returned")
+  end
+
 
   index --> Game
-  Game --> OnClick
-  Game --> nextLevelOnClick
-  Game --> resetOnClick
+  Game ---> OnClick
+  Game ---> nextLevelOnClick
+  Game ---> resetOnClick
+  Game ---> KeydownOnClick
 
-  resetOnClick --> resetGame
+  resetOnClick ---> resetGame
   resetOnClick --> startNewLevel
   OnClick --> loadLevel
   OnClick --> startLevelSequence
+  KeydownOnClick --> OnClick
   
   startNewLevel --> loadLevel
   startNewLevel --> startLevelSequence
@@ -146,6 +160,7 @@ flowchart TB
   OnClick:::tropical
   nextLevelOnClick:::tropical
   resetOnClick:::tropical
+  KeydownOnClick:::tropical
   startNewLevel:::tropical
   selectRandomWord:::tropical
   startLevelSequence:::tropical
