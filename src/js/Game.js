@@ -4,7 +4,7 @@ import WordShip from './WordShip';
 import { pause, randomInt } from './util.js';
 
 import GraphLevel from './GraphLevel';
-import Level2 from './Level2.js';
+import Level2 from './StreetLevel2.js';
 import ShrinkingLevel from './ShrinkingLevel.js';
 import QuickDrawLevel from './QuickDrawLevel.js';
 import DolphinLevel from './DolphinLevel.js';
