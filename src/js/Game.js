@@ -3,10 +3,11 @@ import WordAPI from './WordApi';
 import WordShip from './WordShip';
 import { pause, randomInt } from './util.js';
 
+import GraphLevel from './GraphLevel.js';
+import Level2 from './Level2.js';
 import DolphinLevel from './DolphinLevel.js';
 import ShrinkingLevel from './ShrinkingLevel.js';
 import QuickDrawLevel from './QuickDrawLevel.js';
-import DolphinLevel from './DolphinLevel.js';
 import TurretLevel from './TurretLevel.js';
 import HorizontalLevel from './HorizontalLevel.js';
 
@@ -17,7 +18,7 @@ export default class Game {
     this.score = 0;
     this.destroyedThisWave = 0;
     this.health = 100;
-    this.level = 4;
+    this.level = 1;
     this.dictionary = {};
     this.activeWordShips = [];
     this.targetedWordShips = [];
@@ -310,6 +311,7 @@ export default class Game {
   }
 
   async startNewLevel(newLevel) {
+    document.getElementById("next-level-button").classList.add('hidden');
     [...document.getElementsByClassName('modal')].forEach(modal => modal.classList.remove('showing'));
     this.level = newLevel;
     document.getElementById('level-display').innerHTML = `Level ${this.level} <p>0%</p>`;
@@ -323,6 +325,7 @@ export default class Game {
     document.querySelector("#level-clear-modal > .modal-message").innerText = `Level ${this.level} cleared!`;
     let totalWordsInRound = this.levelData[this.level].wordsPerLengthInWave * this.levelData[this.level].wordLengths.length;
     document.querySelector("#level-clear-modal > .modal-details").innerText = `${this.destroyedThisWave}/${totalWordsInRound} words defeated`;
+    document.getElementById("next-level-button").classList.remove('hidden');
     document.getElementById("next-level-button").innerText = `Start Level ${this.level + 1}`;  // calls startNewLevel
   }
   displayGameOverModal() {
