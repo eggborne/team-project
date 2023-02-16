@@ -156,16 +156,14 @@ export default class Game {
       this.levelData[level].wordShipLaunchAction = () => { null; };
     }
     let possibleWordLengths = this.levelData[level].wordLengths;
-    let wordPoolSize = 200;
     let finalAmount = this.levelData[level].wordsPerLengthInWave;
     for (let i = 0; i < possibleWordLengths.length; i++) {
-      await this.fillDictionary(possibleWordLengths[i], wordPoolSize, finalAmount);
+      await this.fillDictionary(possibleWordLengths[i], finalAmount);
     }
   }
 
-  async fillDictionary(wordLength, max, finalAmount) {
-    let response = await this.wordApi.getWords(wordLength, max);
-    response.length = max;
+  async fillDictionary(wordLength, finalAmount) {
+    let response = await this.wordApi.getWords(wordLength, finalAmount);
     this.addUnusedWordsToDictionary(response, wordLength, finalAmount);
   }
 
@@ -184,6 +182,7 @@ export default class Game {
     finalWordsArray.length = finalAmount;
     this.dictionary[wordLength] = finalWordsArray;
     this.usedWords.push(...finalWordsArray);
+    console.log('dic', this.dictionary);
   }
 
   resetGame() {
