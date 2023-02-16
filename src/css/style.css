@@ -198,6 +198,8 @@ main, #input-display {
 
 #player-input-area {
   position: fixed;
+  left: 50%;
+  translate: -50% 0;
   bottom: calc(var(--header-height) / 2);
   height: var(--header-height);
   font-size: 2rem;

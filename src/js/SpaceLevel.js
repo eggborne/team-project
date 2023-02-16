@@ -4,9 +4,9 @@ export default class SpaceLevel {
   constructor(className) {
     document.body.classList = [className];
     this.wordsPerLengthInWave = 6;
-    this.wordLengths = [5,6,7];
+    this.wordLengths = [5,6];
     this.shipSpeed = 6000;
-    this.launchFrequency = 6000;
+    this.launchFrequency = 2000;
     this.defenderElement = document.createElement('div');
     this.defenderElement.classList.add('ship');
     this.defenderElement.id = 'defender-ship';

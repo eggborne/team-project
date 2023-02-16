@@ -18,7 +18,7 @@ export default class Game {
     this.score = 0;
     this.destroyedThisWave = 0;
     this.health = 100;
-    this.level = 1;
+    this.level = 2;
     this.dictionary = {};
     this.activeWordShips = [];
     this.targetedWordShips = [];
@@ -39,7 +39,6 @@ export default class Game {
     this.levelData = [];
 
     document.getElementById('start-button').addEventListener('click', async (e) => {
-      console.warn('Start button clicked');
       e.preventDefault();
       e.target.disabled = true; // prevents Enter key 'clicking' it when invisible
       e.target.classList.add('hidden');
@@ -145,9 +144,11 @@ export default class Game {
 
   async loadLevel(level) {
     console.warn('Loading level', level);
+    document.querySelector('main').innerHTML = '';
     let newLevelData = this.levels[level]();
     newLevelData.game = this;
     this.levelData[level] = newLevelData;
+    
     if (!this.levelData[level].detonateShipAction) {
       this.levelData[level].detonateShipAction = () => { null; };
     }
@@ -227,6 +228,7 @@ export default class Game {
       ship.element.classList.add('defeated');
       if (!this.activeWordShips.length && this.dictionaryEmpty()) {
         pause(1200).then(() => {
+          
           this.displayLevelClearModal();
         });
       }
