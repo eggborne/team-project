@@ -314,6 +314,7 @@ export default class Game {
   }
 
   async startNewLevel(newLevel) {
+    document.getElementById("next-level-button").classList.add('hidden');
     [...document.getElementsByClassName('modal')].forEach(modal => modal.classList.remove('showing'));
     this.level = newLevel;
     document.getElementById('level-display').innerHTML = `Level ${this.level} <p>0%</p>`;
@@ -327,6 +328,7 @@ export default class Game {
     document.querySelector("#level-clear-modal > .modal-message").innerText = `Level ${this.level} cleared!`;
     let totalWordsInRound = this.levelData[this.level].wordsPerLengthInWave * this.levelData[this.level].wordLengths.length;
     document.querySelector("#level-clear-modal > .modal-details").innerText = `${this.destroyedThisWave}/${totalWordsInRound} words defeated`;
+    document.getElementById("next-level-button").classList.remove('hidden');
     document.getElementById("next-level-button").innerText = `Start Level ${this.level + 1}`;  // calls startNewLevel
   }
   displayGameOverModal() {
