@@ -41,13 +41,15 @@ export default class TurretLevel {
   }
 
   loseFocusAction(ship) {
-    ship.focusLayer.classList.add('doomed');
     this.aimTurret(undefined, 0);
-    ship.focusLayer.classList.remove('doomed');
   }
 
-  loseAllTargetsAction(ship) {
-    document.getElementById('main-turret').classList.remove('aiming');
+  async loseAllTargetsAction(ship) {
+    await pause(300);
+    console.log('targ', this.game.targetWordShips);
+    if (this.game.targetedWordShips.length === 0) {
+      document.getElementById('main-turret').classList.remove('aiming');
+    }
   }
 
   placeWordShip() {
