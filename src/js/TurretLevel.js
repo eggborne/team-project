@@ -9,8 +9,8 @@ import {
 export default class TurretLevel {
   constructor(className) {
     document.body.classList = [className];
-    this.wordsPerLengthInWave = 5;
-    this.wordLengths = [5];
+    this.wordsPerLengthInWave = 6;
+    this.wordLengths = [4,5];
     this.shipSpeed = 5000;
     this.launchFrequency = 2000;
 
@@ -45,8 +45,7 @@ export default class TurretLevel {
   }
 
   async loseAllTargetsAction(ship) {
-    await pause(300);
-    console.log('targ', this.game.targetWordShips);
+    await pause(600);
     if (this.game.targetedWordShips.length === 0) {
       document.getElementById('main-turret').classList.remove('aiming');
     }
@@ -59,6 +58,12 @@ export default class TurretLevel {
       x: shipPositionX,
       y: shipPositionY,
     };
+  }
+
+  wordShipLaunchAction(ship) {
+    let wickElement = document.createElement('div');
+    wickElement.classList.add('wick');
+    ship.element.prepend(wickElement);
   }
 
   aimTurret(targetShip, forceAngle) {
