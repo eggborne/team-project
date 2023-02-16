@@ -4,7 +4,7 @@ import WordShip from './WordShip';
 import { pause, randomInt } from './util.js';
 
 import GraphLevel from './GraphLevel';
-import Level2 from './StreetLevel2.js';
+import StreetLevel2 from './StreetLevel2.js';
 import ShrinkingLevel from './ShrinkingLevel.js';
 import QuickDrawLevel from './QuickDrawLevel.js';
 import DolphinLevel from './DolphinLevel.js';
@@ -28,7 +28,7 @@ export default class Game {
     this.levels = [
       undefined,
       () => new GraphLevel('graph-level'),
-      () => new Level2('level2'),
+      () => new StreetLevel2('level2'),
       () => new ShrinkingLevel('shrinking-level'),
       () => new QuickDrawLevel('quick-draw-level'),
       () => new DolphinLevel('dolphin-level'),
