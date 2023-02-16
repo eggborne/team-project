@@ -9,9 +9,14 @@ flowchart
     direction TB
     subgraph OnClick
         direction TB
-        g1(start button onclick) -->
+        g1(start button onclick) -->        
         g2("call LOAD LEVEL()") -->
         g3("call START LEVEL SEQUENCE()")
+    end
+    subgraph nextLevelOnClick
+        direction TB
+        g01("check if next level exist") -->        
+        g02("START NEW LEVEL()")
     end
     subgraph loadLevel
         direction TB
@@ -63,6 +68,11 @@ flowchart
         gf1("count total words defined and words left") -->
         gf2("divide to get doneness")
     end
+    subgraph startNewLevel
+        direction TB
+        gg1("count total words defined and words left") -->
+        gg2("divide to get doneness")
+    end
   end
 
   subgraph WORDSHIP
@@ -86,7 +96,8 @@ flowchart
     end
   end
 
-  index --> Game.js
+  OnClick -.- nextLevelOnClick
+  index --> Game.js:::pink
   g2 --> loadLevel
   g3 --> startLevelSequence
   ga2 --> fillDictionary
@@ -102,7 +113,7 @@ flowchart
   gbb6 --> destroyShip
   gccc3 --> getPercentageDone
   
-  classDef lavender fill:#E07B9A,stroke:#333,stroke-width:2px,font-size:3rem,font-weight:700
-  class Game.js lavender
+  classDef pink fill:#FF91E7,stroke:#333,stroke-width:2px,font-size:3rem,font-weight:700
+  classDef green fill:#027F55,stroke:#333,stroke-width:2px,font-size:3rem,font-weight:700
 ```
   
