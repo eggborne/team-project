@@ -1,0 +1,89 @@
+body.space-level main {
+  background-color: black;
+  background-image: url('../media/ezgif.com-rotate.gif');
+  background-size: cover;
+}
+
+body.space-level .word-ship {
+  background-image: url("../media/attack-plane-svgrepo-com.svg");
+  background-size: cover;
+  width: calc(var(--header-height) * 2);
+  height: calc(var(--header-height) * 2);
+  color: gold;
+}
+
+body.space-level .word-ship::before {
+  content: '';
+  position: absolute;
+  width: 30%;
+  height: 10%;
+  background-color: rgb(250, 9, 0);
+  border-radius: 50%;
+  translate: -125% 0;
+  z-index: 0;
+}
+
+body.space-level .word-ship.descending {
+  animation: slide-to-right var(--descend-speed) linear forwards;
+}
+
+body.space-level .word-ship.defeated {
+  scale: 0;
+  opacity: 0;
+}
+
+body.space-level .word-ship.detonated {
+  transition: scale 150ms ease, 
+    opacity 150ms ease,
+    background-color 150ms ease;
+  scale: 1.5;
+  opacity: 0;
+  background-color: orange;
+}
+
+body.space-level .word-ship.targeted {
+  color: rgb(219, 80, 80);
+}
+
+
+.ship {
+  position: absolute;
+  bottom: 50%;
+  left: unset;
+  right: 0;
+  background-image: url('../media/spaceship-svgrepo-com.svg');
+  background-size: cover;
+  width: calc(var(--header-height) * 2);
+  height: calc(var(--header-height) * 2);
+  display: flex;
+  z-index: 1;
+  transition: all 200ms linear;
+}
+
+.bullet {
+  position: absolute;
+  width: calc(var(--header-height) / 2);
+  height: calc(var(--header-height) / 8);
+  border-radius: 50%;
+  background-color: chartreuse;
+  top: 50%;
+  translate: 0 -50%;
+  transition: translate 500ms linear;
+}
+
+@keyframes slide-to-right {
+  from {
+    left: 0;
+  }
+  to {
+    left: calc(100vw - (var(--header-height) * 2));
+  }
+}
+@keyframes spin {
+  from {
+    rotate: 0;
+  }
+  to {
+    rotate: 180deg;
+  }
+}
