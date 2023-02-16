@@ -28,11 +28,20 @@ body.level2 .word-ship.defeated {
   opacity: 0;
 }
 
-body.level2 #flameEmoji01, body.level2 #flameEmoji02, body.level2 #flameEmoji03 {
+body.level2 #flameEmoji01, body.level2 #flameEmoji02, body.level2 #flameEmoji03, body.level2 #flameEmoji04 {
   display: none;
   position:absolute;
   font-size: 5rem;
+}
 
+body.level2 #fighter01 {
+  position:absolute;
+  background: url(https://media.tenor.com/rbnUP7Jg0KYAAAAC/blanka-electric-thunder.gif) no-repeat;
+  background-size: contain;
+  width: 20rem;
+  height: 20rem;
+  margin-top: 46rem;
+  
 }
 
 #flameEmoji01 {
@@ -44,8 +53,12 @@ body.level2 #flameEmoji01, body.level2 #flameEmoji02, body.level2 #flameEmoji03 
 #flameEmoji03 {
   margin-top: 10rem;
 }
+#flameEmoji04 {
+  margin-bottom: 15rem;
+}
 
-body.level2 #flameEmoji01.showing, body.level2 #flameEmoji02.showing, body.level2 #flameEmoji03.showing {
+body.level2 #flameEmoji01.showing, body.level2 #flameEmoji02.showing, 
+body.level2 #flameEmoji03.showing,body.level2 #flameEmoji04.showing {
   display: block;
   animation: rise 500ms ease;
 }
