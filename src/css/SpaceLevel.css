@@ -9,13 +9,14 @@ body.space-level .word-ship {
   background-size: cover;
   width: calc(var(--header-height) * 2);
   height: calc(var(--header-height) * 2);
+  color: gold;
 }
 
 body.space-level .word-ship::before {
   content: '';
   position: absolute;
   width: 30%;
-  height: 30%;
+  height: 10%;
   background-color: rgb(250, 9, 0);
   border-radius: 50%;
   translate: -125% 0;
