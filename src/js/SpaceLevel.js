@@ -1,5 +1,5 @@
 import '../css/SpaceLevel.css';
-import { randomInt } from './util.js';
+import { randomInt, pause } from './util.js';
 export default class SpaceLevel {
   constructor(className) {
     document.body.classList = [className];
@@ -7,15 +7,15 @@ export default class SpaceLevel {
     this.wordLengths = [5,6,7];
     this.shipSpeed = 6000;
     this.launchFrequency = 6000;
-    this.turretElement = document.createElement('div');
-    this.turretElement.classList.add('ship');
-    this.turretElement.id = 'defender-ship';
+    this.defenderElement = document.createElement('div');
+    this.defenderElement.classList.add('ship');
+    this.defenderElement.id = 'defender-ship';
 
-    document.querySelector('main').prepend(this.turretElement);
+    document.querySelector('main').prepend(this.defenderElement);
   }
 
   firstFocusAction(ship) {
-
+    this.defenderElement.style.top = ship.positionY;
   }
 
   maintainFocusAction(ship) {
@@ -23,6 +23,8 @@ export default class SpaceLevel {
   }
 
   async destroyShipAction(ship) {
+    this.fireBullet(ship);
+    await pause(500);
     this.game.destroyShip(ship, true);
   }
 
@@ -30,39 +32,31 @@ export default class SpaceLevel {
     ship.element.classList.remove('slowed');
   }
 
-  placeWordShip() {
-    let shipPositionX = '0';
+  wordShipLaunchAction(ship) {
     let shipPositionY = randomInt(window.innerHeight * 0.15, window.innerHeight * 0.75) + 'px';
-    return {
-      x: shipPositionX,
-      y: shipPositionY,
-    };
+    ship.element.style.top = shipPositionY;
+    ship.element.style.left = 0;
+    ship.positionY = shipPositionY;
+    // runs every time a word is launched
+    // used to create 1 alien element per dolphin in DolphinLevel
+
   }
 
-  fireBullet(targetShip) {
-    let turretElement = document.getElementById('main-turret');
+  placeWordShip() {
+    //
+  }
+
+  async fireBullet(targetShip) {
+    let shipX = targetShip.element.offsetLeft;
+    let shipWidth = targetShip.element.offsetWidth;
     let bullet = document.createElement('div');
     bullet.classList.add('bullet');
-    document.querySelector('main').prepend(bullet);
-    let targetElement = targetShip.element;
-    let turretPosition = {
-      x: turretElement.offsetLeft,
-      y: turretElement.offsetTop + (turretElement.offsetHeight / 2),
-    };
-    let targetPosition = {
-      x: targetElement.offsetLeft + (targetShip.width / 2),
-      y: targetElement.offsetTop + (targetElement.offsetHeight / 2),
-    };
-    bullet.style.rotate = `${this.turretAngle}deg`;
-    bullet.style.left = (turretPosition.x - (bullet.offsetWidth / 2)) + 'px';
-    bullet.style.top = (turretPosition.y - (bullet.offsetHeight / 2)) + 'px';
-    let moveXAmount = targetPosition.x - turretPosition.x;
-    let moveYAmount = targetPosition.y - turretPosition.y;
-    bullet.style.translate = `${moveXAmount}px ${moveYAmount}px`;
+    this.defenderElement.append(bullet);
+    await pause(10);
+    bullet.style.translate = ((window.innerWidth - shipX - (shipWidth * 2.5)) * -1) + 'px -50%';
     bullet.addEventListener('transitionend', (e) => {
       e.target.parentElement.removeChild(e.target);
     });
-    return 300;
   }
 
 }

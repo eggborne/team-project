@@ -1,12 +1,14 @@
 body.space-level main {
   background-color: black;
-  background-image: url('https://images.unsplash.com/photo-1675093517721-61b46b82dffc?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1950&q=80');
+  background-image: url('../media/ezgif.com-rotate.gif');
   background-size: cover;
 }
 
 body.space-level .word-ship {
   background-image: url("../media/attack-plane-svgrepo-com.svg");
   background-size: cover;
+  width: calc(var(--header-height) * 2);
+  height: calc(var(--header-height) * 2);
 }
 
 body.space-level .word-ship::before {
@@ -54,15 +56,26 @@ body.space-level .word-ship.targeted {
   height: calc(var(--header-height) * 2);
   display: flex;
   z-index: 1;
+  transition: all 200ms linear;
 }
 
+.bullet {
+  position: absolute;
+  width: calc(var(--header-height) / 2);
+  height: calc(var(--header-height) / 8);
+  border-radius: 50%;
+  background-color: chartreuse;
+  top: 50%;
+  translate: 0 -50%;
+  transition: translate 500ms linear;
+}
 
 @keyframes slide-to-right {
   from {
-    translate: 0 0;
+    left: 0;
   }
   to {
-    translate: calc(100vw - 100%) 0;
+    left: calc(100vw - (var(--header-height) * 2));
   }
 }
 @keyframes spin {
