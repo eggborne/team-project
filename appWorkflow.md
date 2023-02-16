@@ -70,8 +70,9 @@ flowchart
     end
     subgraph startNewLevel
         direction TB
-        gg1("count total words defined and words left") -->
-        gg2("divide to get doneness")
+        gg1("remove modal<br>reset level stats") -->
+        gg2("LOAD LEVEL()") -->
+        gg3("START LEVEL SEQUENCE()")
     end
   end
 
@@ -96,6 +97,7 @@ flowchart
     end
   end
 
+  
   OnClick -.- nextLevelOnClick
   index --> Game.js:::pink
   g2 --> loadLevel
@@ -112,8 +114,11 @@ flowchart
   gbb5 --> deleteShip
   gbb6 --> destroyShip
   gccc3 --> getPercentageDone
+  g02 --> startNewLevel
+  gg2 --> loadLevel
+  gg3 --> startLevelSequence
   
-  classDef pink fill:#FF91E7,stroke:#333,stroke-width:2px,font-size:3rem,font-weight:700
+  classDef pink fill:#FF91E7,stroke:#333,stroke-width:5px,font-size:3rem,font-weight:700
   classDef green fill:#027F55,stroke:#333,stroke-width:2px,font-size:3rem,font-weight:700
 ```
   
