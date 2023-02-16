@@ -3,12 +3,13 @@ import WordAPI from './WordApi';
 import WordShip from './WordShip';
 import { pause, randomInt } from './util.js';
 
+import GraphLevel from './GraphLevel.js';
+import Level2 from './Level2.js';
 import DolphinLevel from './DolphinLevel.js';
 import ShrinkingLevel from './ShrinkingLevel.js';
 import QuickDrawLevel from './QuickDrawLevel.js';
-import DolphinLevel from './DolphinLevel.js';
 import TurretLevel from './TurretLevel.js';
-import HorizontalLevel from './HorizontalLevel.js';
+import SpaceLevel from './SpaceLevel';
 
 export default class Game {
   constructor(levelObject) {
@@ -17,7 +18,7 @@ export default class Game {
     this.score = 0;
     this.destroyedThisWave = 0;
     this.health = 100;
-    this.level = 4;
+    this.level = 1;
     this.dictionary = {};
     this.activeWordShips = [];
     this.targetedWordShips = [];
@@ -27,13 +28,13 @@ export default class Game {
 
     this.levels = [
       undefined,
+      () => new SpaceLevel('space-level'),
       () => new GraphLevel('graph-level'),
       () => new Level2('level2'),
       () => new ShrinkingLevel('shrinking-level'),
       () => new QuickDrawLevel('quick-draw-level'),
       () => new DolphinLevel('dolphin-level'),
       () => new TurretLevel('turret-level'),
-      () => new HorizontalLevel('horizontal-level'),
     ];
     this.levelData = [];
 
@@ -254,8 +255,10 @@ export default class Game {
     let newWord = this.selectRandomWord();
     let newWordShip = new WordShip(newWord);
     let newShipPosition = this.levelData[this.level].placeWordShip();
-    newWordShip.element.style.left = newShipPosition.x;
-    newWordShip.element.style.top = newShipPosition.y;
+    if (newShipPosition) {
+      newWordShip.element.style.left = newShipPosition.x;
+      newWordShip.element.style.top = newShipPosition.y;
+    }
     newWordShip.element.style.setProperty('--descend-speed', this.levelData[this.level].shipSpeed + 'ms');
     this.levelData[this.level].wordShipLaunchAction(newWordShip);
     this.activeWordShips.push(newWordShip);
@@ -304,6 +307,7 @@ export default class Game {
     let newWord = wordArray[randomInt(0, wordArray.length - 1)];
     this.dictionary[randomLength].splice(this.dictionary[randomLength].indexOf(newWord), 1);
     if (!newWord) {
+      newWord = "undefined";
       console.log('selected undefined newWord with args: possibleLengths, randomLength, wordArray', possibleLengths, randomLength, wordArray);
     }
     return newWord;
